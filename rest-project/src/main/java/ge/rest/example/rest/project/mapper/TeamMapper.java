@@ -4,8 +4,8 @@
  */
 package ge.rest.example.rest.project.mapper;
 
-import ge.rest.example.rest.project.domain.Course;
-import ge.rest.example.rest.project.model.CourseDTO;
+import ge.rest.example.rest.project.domain.Team;
+import ge.rest.example.rest.project.model.TeamDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -14,12 +14,10 @@ import org.mapstruct.factory.Mappers;
  * @author vako
  */
 @Mapper
-public interface CourseMapper {
-    
-    CourseMapper INSTANCE = Mappers.getMapper(CourseMapper.class);
+public interface TeamMapper {
+    TeamMapper INSTANCE = Mappers.getMapper(TeamMapper.class);
 
+    TeamDTO teamToTeamDTO(Team team);
 
-    CourseDTO courseToCourseDTO(Course course);
-    
-    Course courseDtoTocourse(CourseDTO courseDTO);
+    Team teamDtoToteam(TeamDTO teamDTO);
 }

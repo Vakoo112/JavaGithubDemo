@@ -4,19 +4,20 @@
  */
 package ge.rest.example.rest.project.services;
 
-import ge.rest.example.rest.project.model.CourseDTO;
+import ge.rest.example.rest.project.model.TeamDTO;
+import ge.rest.example.rest.project.model.TeamListDTO;
 import java.util.List;
 
 /**
  *
  * @author vako
  */
-public interface CourseService {
-    List<CourseDTO> getAllCourses();
+public interface TeamService {
+    List<TeamDTO> getAllTeam();
 
-    CourseDTO getCourseByName(String name);
+    TeamDTO getTeamsById(Long id);
     
-    CourseDTO saveCourseByDTO(Long id, CourseDTO courseDTO);
+    TeamDTO saveCTeamByDTO(Long id, TeamDTO teamDTO);
     
-    void deleteStudentById(Long id);
+    void deleteTeamById(Long id);
 }

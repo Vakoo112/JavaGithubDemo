@@ -33,15 +33,15 @@ public class Bootstrap implements CommandLineRunner {
     
      private void loadCourse() {
          Course biology = new Course();
-         biology.setDescription("Biology");
+         biology.setName("Biology");
          
          
           Course math = new Course();
-         math.setDescription("Math");
+         math.setName("Math");
      
          
           Course physics = new Course();
-         physics.setDescription("Physics");
+         physics.setName("Physics");
         
          
          courseRepository.save(biology);

@@ -4,6 +4,7 @@
  */
 package ge.rest.example.rest.project.model;
 
+import java.util.Date;
 import lombok.Data;
 
 /**
@@ -11,8 +12,9 @@ import lombok.Data;
  * @author vako
  */
 @Data
-public class CourseDTO {
+public class TeamDTO {
     private Long id;
-    private String name;
-    private String description;
+    private Date starttime;
+    private Date endtime;
+    private Integer maxstudentsenrolled;
 }

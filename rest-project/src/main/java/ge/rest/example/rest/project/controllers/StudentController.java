@@ -42,28 +42,31 @@ public class StudentController {
     public StudentListDTO getListOfStudent(){
         return new StudentListDTO(studentService.getAllStudents());
     }
-    
+    @ApiOperation(value="This will get a student by id", notes = "Api student id")
     @GetMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
     public StudentDTO getStudentById(@PathVariable Long id){
         return studentService.getStudentById(id);
     }
-    
+    @ApiOperation(value="This will create a new student", notes = "Api creates shesaxeb")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public StudentDTO createNewStudent(@RequestBody StudentDTO studentDTO){
         return studentService.createNewStudent(studentDTO);
     }
+    @ApiOperation(value="This will update ", notes = "Api update shesaxeb")
      @PutMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
     public StudentDTO updateStudent(@PathVariable Long id, @RequestBody StudentDTO studentDTO){
         return studentService.saveStudentByDTO(id, studentDTO);
     }
+    @ApiOperation(value="This will patch", notes = "Api patch shesaxeb")
     @PatchMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
     public StudentDTO patchStudent(@PathVariable Long id, @RequestBody StudentDTO studentDTO){
         return studentService.patchStudent(id, studentDTO);
     }
+    @ApiOperation(value="This will delete a  student", notes = "Api delete shesaxeb")
     @DeleteMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
     public void deleteStudent(@PathVariable Long id){

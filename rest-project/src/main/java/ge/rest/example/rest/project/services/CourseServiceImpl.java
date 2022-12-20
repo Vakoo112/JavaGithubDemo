@@ -4,6 +4,7 @@
  */
 package ge.rest.example.rest.project.services;
 
+import ge.rest.example.rest.project.domain.Course;
 import ge.rest.example.rest.project.mapper.CourseMapper;
 import ge.rest.example.rest.project.model.CourseDTO;
 import ge.rest.example.rest.project.repositories.CourseRepository;
@@ -41,4 +42,21 @@ public class CourseServiceImpl implements CourseService {
     public CourseDTO getCourseByName(String description) {
         return courseMapper.courseToCourseDTO(courseRepository.findByName(description));
     }
+    @Override
+    public CourseDTO saveCourseByDTO(Long id, CourseDTO courseDTO) {
+         return saveAndReturnDTO(courseMapper.courseDtoTocourse(courseDTO));
+    }
+    
+      private CourseDTO saveAndReturnDTO(Course course) {
+        Course saveCourse = courseRepository.save(course);
+
+        CourseDTO returnDto = courseMapper.courseToCourseDTO(saveCourse);
+
+
+        return returnDto;
+    }
+      @Override
+      public void deleteStudentById(Long id) {
+          courseRepository.deleteById(id);
+      }
 }

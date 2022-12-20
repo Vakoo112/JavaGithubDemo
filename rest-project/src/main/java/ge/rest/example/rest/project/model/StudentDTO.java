@@ -5,6 +5,8 @@
 package ge.rest.example.rest.project.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import ge.rest.example.rest.project.domain.Contact;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +22,7 @@ public class StudentDTO {
     
     private String firstname;
     private String lastname;
+    private Set<Contact> contacts;
     @JsonProperty("student_url")
     private String studentUrl;
 }
