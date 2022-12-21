@@ -60,12 +60,7 @@ public class StudentController {
     public StudentDTO updateStudent(@PathVariable Long id, @RequestBody StudentDTO studentDTO){
         return studentService.saveStudentByDTO(id, studentDTO);
     }
-    @ApiOperation(value="This will patch", notes = "Api patch shesaxeb")
-    @PatchMapping({"/{id}"})
-    @ResponseStatus(HttpStatus.OK)
-    public StudentDTO patchStudent(@PathVariable Long id, @RequestBody StudentDTO studentDTO){
-        return studentService.patchStudent(id, studentDTO);
-    }
+    
     @ApiOperation(value="This will delete a  student", notes = "Api delete shesaxeb")
     @DeleteMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)

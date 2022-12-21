@@ -20,7 +20,5 @@ public interface StudentService {
 
     StudentDTO saveStudentByDTO(Long id, StudentDTO studentDTO);
 
-    StudentDTO patchStudent(Long id, StudentDTO studentDTO);
-
     void deleteStudentById(Long id);
 }

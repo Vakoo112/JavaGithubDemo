@@ -75,25 +75,6 @@ public class StudentServiceImpl implements StudentService {
         return saveAndReturnDTO(student);
     }
     
-     @Override
-    public StudentDTO patchStudent(Long id, StudentDTO studentDTO){
-        return studentRepository.findById(id).map(student -> {
-
-            if(studentDTO.getFirstname() != null){
-                student.setFirstname(studentDTO.getFirstname());
-            }
-
-            if(studentDTO.getLastname() != null){
-                student.setLastname(studentDTO.getLastname());
-            }
-
-            StudentDTO returnDto = studentMapper.studentToStudentDTO(studentRepository.save(student));
-
-          //  returnDto.setStudentUrl(getStudentUrl(id));
-            return returnDto;
-
-        }).orElseThrow(RuntimeException::new); 
-    }
     
      private String getCustomerUrl(Long id) {
         return StudentController.BASE_URL + "/" + id;

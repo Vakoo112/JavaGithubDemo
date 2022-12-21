@@ -4,6 +4,7 @@
  */
 package ge.rest.example.rest.project.domain;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 import javax.persistence.Entity;
@@ -32,8 +33,8 @@ public class Team {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
-    private Date starttime;
-    private Date endtime;
+    private LocalDate  starttime;
+    private LocalDate  endtime;
     private Integer maxstudentsenrolled;
     
     @ManyToOne

@@ -17,7 +17,11 @@ public interface TeamService {
 
     TeamDTO getTeamsById(Long id);
     
+    TeamDTO createNewTeam(TeamDTO teamDTO);
+    
     TeamDTO saveCTeamByDTO(Long id, TeamDTO teamDTO);
     
     void deleteTeamById(Long id);
+    
+   
 }

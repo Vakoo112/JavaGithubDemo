@@ -35,6 +35,8 @@ public class Student {
     private Long id;
     private String firstname;
     private String lastname;
+    private Integer idnumber;
+    private String adress;
     @OneToMany(cascade=CascadeType.ALL, mappedBy="student")
     private Set<Contact> contacts = new HashSet<>();
     @ManyToMany

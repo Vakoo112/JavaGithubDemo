@@ -48,6 +48,12 @@ public class CourseController {
     public CourseDTO getCourseByName(@PathVariable String name){
         return courseService.getCourseByName(name);
     }
+     @ApiOperation(value="Get course by id ", notes = "team id shesaxeb")
+    @GetMapping({"/{id}"})
+    @ResponseStatus(HttpStatus.OK)
+    public CourseDTO getTeamById(@PathVariable Long id){
+        return courseService.getCourseById(id);
+    }
     @ApiOperation(value="Update course", notes = "update shesaxeb")
      @PutMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)

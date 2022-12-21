@@ -22,7 +22,8 @@ public class StudentDTO {
     
     private String firstname;
     private String lastname;
+    private Integer idnumber;
+     private String adress;
     private Set<Contact> contacts;
-    @JsonProperty("student_url")
-    private String studentUrl;
+    
 }

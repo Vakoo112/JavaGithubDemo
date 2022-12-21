@@ -4,18 +4,18 @@
  */
 package ge.rest.example.rest.project.model;
 
-import ge.rest.example.rest.project.domain.Team;
-import java.util.Set;
+import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  *
  * @author vako
  */
 @Data
-public class CourseDTO {
-    private Long id;
-    private String name;
-    private String description;
-    private Set<Team> teams;
+@NoArgsConstructor
+@AllArgsConstructor
+public class ContactListDTO {
+     List<ContactDTO> students;
 }

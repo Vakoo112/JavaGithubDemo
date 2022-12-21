@@ -16,7 +16,12 @@ public interface CourseService {
 
     CourseDTO getCourseByName(String name);
     
+     CourseDTO getCourseById(Long id);
+    
+    CourseDTO createNewCourse(CourseDTO courseDTO);
+    
     CourseDTO saveCourseByDTO(Long id, CourseDTO courseDTO);
     
     void deleteStudentById(Long id);
+    
 }

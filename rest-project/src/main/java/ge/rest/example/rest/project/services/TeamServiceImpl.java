@@ -50,6 +50,11 @@ public class TeamServiceImpl implements TeamService {
                 .orElseThrow(RuntimeException::new);
         
     }
+    @Override
+    public TeamDTO createNewTeam(TeamDTO teamDTO) {
+
+        return saveAndReturnDTO(teamMapper.teamDtoToteam(teamDTO));
+    }
      private TeamDTO saveAndReturnDTO(Team team) {
         Team savedTeam = teamRepository.save(team);
 
@@ -68,6 +73,10 @@ public class TeamServiceImpl implements TeamService {
     
        @Override
     public void deleteTeamById(Long id) {
-        teamRepository.deleteById(id);
+      
+            teamRepository.deleteById(id);
+        
     }
+    
+   
 }

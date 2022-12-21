@@ -4,13 +4,13 @@
  */
 package ge.rest.example.rest.project.repositories;
 
-import ge.rest.example.rest.project.domain.Course;
+import ge.rest.example.rest.project.domain.Contact;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  *
  * @author vako
  */
-public interface CourseRepository extends JpaRepository<Course,Long> {
-    Course findByName(String name);
+public interface ContactRepository extends JpaRepository<Contact,Long> {
+    
 }

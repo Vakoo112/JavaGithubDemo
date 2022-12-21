@@ -39,8 +39,26 @@ public class CourseServiceImpl implements CourseService {
                 .collect(Collectors.toList());
     }
         @Override
-    public CourseDTO getCourseByName(String description) {
-        return courseMapper.courseToCourseDTO(courseRepository.findByName(description));
+    public CourseDTO getCourseByName(String name) {
+        return courseMapper.courseToCourseDTO(courseRepository.findByName(name));
+    }
+     @Override
+    public CourseDTO getCourseById(Long id) {
+
+        return courseRepository.findById(id)
+                .map(courseMapper::courseToCourseDTO)
+                .map(courseDTO -> {
+                   
+                    return courseDTO;
+                })
+                .orElseThrow(RuntimeException::new);
+        
+    }
+    
+     @Override
+    public CourseDTO createNewCourse(CourseDTO courseDTO) {
+
+        return saveAndReturnDTO(courseMapper.courseDtoTocourse(courseDTO));
     }
     @Override
     public CourseDTO saveCourseByDTO(Long id, CourseDTO courseDTO) {
@@ -59,4 +77,6 @@ public class CourseServiceImpl implements CourseService {
       public void deleteStudentById(Long id) {
           courseRepository.deleteById(id);
       }
+      
+      
 }
