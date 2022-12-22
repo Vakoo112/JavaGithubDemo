@@ -5,7 +5,6 @@
 package ge.rest.example.rest.project.domain;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,7 +14,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,6 +33,7 @@ public class Team {
     private long id;
     private LocalDate  starttime;
     private LocalDate  endtime;
+ 
     private Integer maxstudentsenrolled;
     
     @ManyToOne

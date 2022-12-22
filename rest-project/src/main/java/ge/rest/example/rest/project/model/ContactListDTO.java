@@ -17,5 +17,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ContactListDTO {
-     List<ContactDTO> students;
+     List<ContactReq> contacts;
 }

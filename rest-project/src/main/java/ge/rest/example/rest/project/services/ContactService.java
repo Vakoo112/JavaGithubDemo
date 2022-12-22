@@ -5,6 +5,7 @@
 package ge.rest.example.rest.project.services;
 
 import ge.rest.example.rest.project.model.ContactDTO;
+import ge.rest.example.rest.project.model.ContactReq;
 import java.util.List;
 
 /**
@@ -13,13 +14,13 @@ import java.util.List;
  */
 public interface ContactService {
 
-    List<ContactDTO> getAllContact();
+    List<ContactReq> getAllContact();
 
-    ContactDTO getContactsById(Long id);
+    ContactReq getContactsById(Long id);
     
-    ContactDTO createNewContact(ContactDTO contactDTO);
+    ContactReq createNewContact(ContactReq contactReq);
 
-    ContactDTO saveContactByDTO(Long id, ContactDTO contactDTO);
+    ContactReq saveContactByDTO(Long id, ContactReq contactReq);
 
     void deleteContactById(Long id);
 }

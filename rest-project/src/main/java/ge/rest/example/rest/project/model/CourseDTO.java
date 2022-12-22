@@ -4,9 +4,11 @@
  */
 package ge.rest.example.rest.project.model;
 
-import ge.rest.example.rest.project.domain.Team;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import lombok.Data;
+import lombok.NonNull;
 
 /**
  *
@@ -14,8 +16,11 @@ import lombok.Data;
  */
 @Data
 public class CourseDTO {
-    private Long id;
+
     private String name;
+
     private String description;
-    private Set<Team> teams;
+    @JsonProperty("courseurl")
+    private String courseUrl;
+
 }

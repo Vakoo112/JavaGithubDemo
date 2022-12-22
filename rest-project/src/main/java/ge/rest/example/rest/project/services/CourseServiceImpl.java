@@ -4,11 +4,12 @@
  */
 package ge.rest.example.rest.project.services;
 
+import ge.rest.example.rest.project.controllers.CourseController;
 import ge.rest.example.rest.project.domain.Course;
 import ge.rest.example.rest.project.mapper.CourseMapper;
 import ge.rest.example.rest.project.model.CourseDTO;
 import ge.rest.example.rest.project.repositories.CourseRepository;
-import ge.rest.example.rest.project.repositories.StudentRepository;
+import ge.rest.example.rest.project.repositories.TeamRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -22,61 +23,67 @@ public class CourseServiceImpl implements CourseService {
 
     private final CourseMapper courseMapper;
     private final CourseRepository courseRepository;
-    private final StudentRepository studentRepository;
+    private final TeamRepository teamRepository;
 
-    public CourseServiceImpl(CourseMapper courseMapper, CourseRepository courseRepository, StudentRepository studentRepository) {
+    public CourseServiceImpl(CourseMapper courseMapper, CourseRepository courseRepository, TeamRepository teamRepository) {
         this.courseMapper = courseMapper;
         this.courseRepository = courseRepository;
-        this.studentRepository = studentRepository;
+        this.teamRepository = teamRepository;
+
     }
 
     @Override
-    public List<CourseDTO> getAllCourses(){
+    public List<CourseDTO> getAllCourses() {
 
         return courseRepository.findAll()
                 .stream()
-                .map(courseMapper::courseToCourseDTO)
+                .map(course -> {
+                    CourseDTO courseDTO = courseMapper.courseToCourseDTO(course);
+                    courseDTO.setCourseUrl(getCourseUrl(course.getId()));
+                    return courseDTO;
+                })
                 .collect(Collectors.toList());
     }
-        @Override
-    public CourseDTO getCourseByName(String name) {
-        return courseMapper.courseToCourseDTO(courseRepository.findByName(name));
-    }
-     @Override
+
+    @Override
     public CourseDTO getCourseById(Long id) {
 
         return courseRepository.findById(id)
                 .map(courseMapper::courseToCourseDTO)
                 .map(courseDTO -> {
-                   
+                    courseDTO.setCourseUrl(getCourseUrl(id));
                     return courseDTO;
                 })
                 .orElseThrow(RuntimeException::new);
-        
+
     }
-    
-     @Override
+
+    @Override
     public CourseDTO createNewCourse(CourseDTO courseDTO) {
 
         return saveAndReturnDTO(courseMapper.courseDtoTocourse(courseDTO));
     }
+
     @Override
     public CourseDTO saveCourseByDTO(Long id, CourseDTO courseDTO) {
-         return saveAndReturnDTO(courseMapper.courseDtoTocourse(courseDTO));
+        return saveAndReturnDTO(courseMapper.courseDtoTocourse(courseDTO));
     }
-    
-      private CourseDTO saveAndReturnDTO(Course course) {
-        Course saveCourse = courseRepository.save(course);
 
+    private CourseDTO saveAndReturnDTO(Course course) {
+        Course saveCourse = courseRepository.save(course);
         CourseDTO returnDto = courseMapper.courseToCourseDTO(saveCourse);
 
-
+        returnDto.setCourseUrl(getCourseUrl(saveCourse.getId()));
         return returnDto;
     }
-      @Override
-      public void deleteStudentById(Long id) {
-          courseRepository.deleteById(id);
-      }
-      
-      
+
+    private String getCourseUrl(Long id) {
+        return CourseController.BASE_URL + "/" + id;
+    }
+
+    @Override
+    public void deleteCourseById(Long id) {
+        courseRepository.deleteById(id);
+    }
+
 }

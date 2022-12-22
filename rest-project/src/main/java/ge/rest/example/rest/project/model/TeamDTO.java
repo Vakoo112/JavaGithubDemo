@@ -4,10 +4,7 @@
  */
 package ge.rest.example.rest.project.model;
 
-import ge.rest.example.rest.project.domain.Student;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.Set;
 import lombok.Data;
 
 /**
@@ -16,9 +13,10 @@ import lombok.Data;
  */
 @Data
 public class TeamDTO {
-    private Long id;
+    //private Long id;
     private LocalDate  starttime;
     private LocalDate  endtime;
+     
     private Integer maxstudentsenrolled;
-    private Set<Student> students;
+   
 }

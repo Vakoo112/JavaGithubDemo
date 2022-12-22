@@ -4,12 +4,9 @@
  */
 package ge.rest.example.rest.project.controllers;
 
-import ge.rest.example.rest.project.model.StudentDTO;
 import ge.rest.example.rest.project.model.TeamDTO;
 import ge.rest.example.rest.project.model.TeamListDTO;
 import ge.rest.example.rest.project.services.TeamService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author vako
  */
 
-@Api(description="This is my Team Controller")
+//@Api(description="This is my Team Controller")
 @RestController
 @RequestMapping(TeamController.BASE_URL)
 public class TeamController {
@@ -36,7 +33,7 @@ public class TeamController {
     public TeamController(TeamService teamService) {
         this.teamService = teamService;
     }
-    @ApiOperation(value="Get all teams", notes = "teamebis shesaxeb")
+   // @ApiOperation(value="Get all teams", notes = "teamebis shesaxeb")
      @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public TeamListDTO getAllTeam(){
@@ -44,26 +41,26 @@ public class TeamController {
         return new TeamListDTO
                  (teamService.getAllTeam());
     }
-    @ApiOperation(value="Get team by id ", notes = "team id shesaxeb")
+    //@ApiOperation(value="Get team by id ", notes = "team id shesaxeb")
     @GetMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
     public TeamDTO getTeamById(@PathVariable Long id){
         return teamService.getTeamsById(id);
     }
-      @ApiOperation(value="This will create a new team", notes = "Api creates shesaxeb")
+     // @ApiOperation(value="This will create a new team", notes = "Api creates shesaxeb")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public TeamDTO createNewTeam(@RequestBody TeamDTO teamDTO){
         return teamService.createNewTeam(teamDTO);
     }
-    @ApiOperation(value="Update team", notes = " update shesaxeb")
+   // @ApiOperation(value="Update team", notes = " update shesaxeb")
      @PutMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
     public TeamDTO updateTeam(@PathVariable Long id, @RequestBody TeamDTO teamDTO){
 
         return teamService.saveCTeamByDTO(id, teamDTO);
     }
-    @ApiOperation(value="Delte team", notes = "delete shesaxeb")
+   // @ApiOperation(value="Delte team", notes = "delete shesaxeb")
         @DeleteMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
     public void deleteTeam(@PathVariable Long id){

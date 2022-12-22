@@ -4,9 +4,10 @@
  */
 package ge.rest.example.rest.project.services;
 
+import ge.rest.example.rest.project.controllers.ContactController;
 import ge.rest.example.rest.project.domain.Contact;
 import ge.rest.example.rest.project.mapper.ContactMapper;
-import ge.rest.example.rest.project.model.ContactDTO;
+import ge.rest.example.rest.project.model.ContactReq;
 import ge.rest.example.rest.project.repositories.ContactRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,49 +27,54 @@ public class ContactServiceImpl implements ContactService {
         this.contactRepository = contactRepository;
     }
       @Override
-   public     List<ContactDTO> getAllContact() {
+   public     List<ContactReq> getAllContact() {
         return contactRepository
                 .findAll()
                 .stream()
                 .map(contact -> {
-                   ContactDTO contactDTO = contactMapper.contactToContactDTO(contact);
-                   return contactDTO;
+                   ContactReq contactReq = contactMapper.contactToContactres(contact);
+                   contactReq.setContactUrl(getContactUrl(contact.getId()));
+                   return contactReq;
                 })
                 .collect(Collectors.toList());
     }
     @Override
-    public ContactDTO getContactsById(Long id) {
+    public ContactReq getContactsById(Long id) {
 
         return contactRepository.findById(id)
-                .map(contactMapper::contactToContactDTO)
-                .map(contactDTO -> {
-                   
-                    return contactDTO;
+                .map(contactMapper::contactToContactres)
+                .map(contactReq -> {
+                    contactReq.setContactUrl(getContactUrl(id));
+                    return contactReq;
                 })
                 .orElseThrow(RuntimeException::new);
         
     }
     
       @Override
-    public ContactDTO createNewContact(ContactDTO contactDTO) {
+    public ContactReq createNewContact(ContactReq contactReq) {
 
-        return saveAndReturnDTO(contactMapper.contactDtoTcontact(contactDTO));
+        return saveAndReturnDTO(contactMapper.contactDtoTcontact(contactReq));
     }
     
-    private ContactDTO saveAndReturnDTO(Contact contact) {
-        Contact savedContact = contactRepository.save(contact);
+    private ContactReq saveAndReturnDTO(Contact contact) {
+        Contact savedReq = contactRepository.save(contact);
 
-        ContactDTO returnDto = contactMapper.contactToContactDTO(savedContact);
+        ContactReq returnDto = contactMapper.contactToContactres(savedReq);
 
-
+        returnDto.setContactUrl(getContactUrl(savedReq.getId()));
         return returnDto;
     }
     
        @Override
-    public ContactDTO saveContactByDTO(Long id, ContactDTO contactDTO) {
-        Contact contact = contactMapper.contactDtoTcontact(contactDTO);
+    public ContactReq saveContactByDTO(Long id, ContactReq contactReq) {
+        Contact contact = contactMapper.contactDtoTcontact(contactReq);
         contact.setId(id);
         return saveAndReturnDTO(contact);
+    }
+    
+     private String getContactUrl(Long id) {
+        return ContactController.BASE_URL + "/" + id;
     }
        @Override
     public void deleteContactById(Long id) {

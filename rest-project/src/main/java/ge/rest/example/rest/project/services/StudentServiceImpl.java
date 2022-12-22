@@ -34,7 +34,7 @@ public class StudentServiceImpl implements StudentService {
                 .stream()
                 .map(student -> {
                    StudentDTO studentDTO = studentMapper.studentToStudentDTO(student);
-                 //  studentDTO.setStudentUrl(getStudentUrl(student.getId()));
+                 studentDTO.setStudentUrl(getStudentUrl(student.getId()));
                    return studentDTO;
                 })
                 .collect(Collectors.toList());
@@ -47,7 +47,6 @@ public class StudentServiceImpl implements StudentService {
                 .map(studentMapper::studentToStudentDTO)
                 .map(studentDTO -> {
                    
-                  //  studentDTO.setStudentUrl(getStudentUrl(id));
                     return studentDTO;
                 })
                 .orElseThrow(RuntimeException::new);
@@ -60,11 +59,9 @@ public class StudentServiceImpl implements StudentService {
     
       private StudentDTO saveAndReturnDTO(Student student) {
         Student savedStudent = studentRepository.save(student);
-
+        
         StudentDTO returnDto = studentMapper.studentToStudentDTO(savedStudent);
-
-       // returnDto.setStudentUrl(getStudentUrl(savedStudent.getId()));
-
+           returnDto.setStudentUrl(getStudentUrl(savedStudent.getId()));
         return returnDto;
     }
       
@@ -76,7 +73,7 @@ public class StudentServiceImpl implements StudentService {
     }
     
     
-     private String getCustomerUrl(Long id) {
+     private String getStudentUrl(Long id) {
         return StudentController.BASE_URL + "/" + id;
     }
      

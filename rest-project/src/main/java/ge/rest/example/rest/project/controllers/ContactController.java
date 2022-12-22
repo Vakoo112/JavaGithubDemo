@@ -4,11 +4,11 @@
  */
 package ge.rest.example.rest.project.controllers;
 
-import ge.rest.example.rest.project.model.ContactDTO;
 import ge.rest.example.rest.project.model.ContactListDTO;
+import ge.rest.example.rest.project.model.ContactReq;
 import ge.rest.example.rest.project.services.ContactService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author vako
  */
-@Api(description="This is my Contact Controller")
+@Tag(name="This is my Contact Controller")
 @RestController
 @RequestMapping(ContactController.BASE_URL)
 public class ContactController {
@@ -34,7 +34,7 @@ public class ContactController {
     public ContactController(ContactService contactService) {
         this.contactService = contactService;
     }
-      @ApiOperation(value="Get all contacts", notes = "contact shesaxeb")
+     @Operation(summary = "Get Contact ", description = "Contact  shesaxeb ")
      @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public ContactListDTO getAllContact(){
@@ -42,27 +42,27 @@ public class ContactController {
         return new ContactListDTO
                  (contactService.getAllContact());
     }
-     @ApiOperation(value="Get contact by id ", notes = "contact id shesaxeb")
+    @Operation(summary = "Get Contact by id ", description = "Contact id  shesaxeb ")
     @GetMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
-    public ContactDTO getContactById(@PathVariable Long id){
+    public ContactReq getContactById(@PathVariable Long id){
         return contactService.getContactsById(id);
     }
     
-     @ApiOperation(value="This will create a new team", notes = "Api creates shesaxeb")
+  @Operation(summary = "Create Contact  ", description = "Contact sheqmnis  shesaxeb ")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ContactDTO createNewContact(@RequestBody ContactDTO contactDTO){
-        return contactService.createNewContact(contactDTO);
+    public ContactReq createNewContact(@RequestBody ContactReq contactReq){
+        return contactService.createNewContact(contactReq);
     }
-     @ApiOperation(value="Update contact", notes = " update shesaxeb")
+   @Operation(summary = "update Contact ", description = "Contact update  shesaxeb ")
      @PutMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
-    public ContactDTO updateContact(@PathVariable Long id, @RequestBody ContactDTO contactDTO){
+    public ContactReq updateContact(@PathVariable Long id, @RequestBody ContactReq contactReq){
 
-        return contactService.saveContactByDTO(id, contactDTO);
+        return contactService.saveContactByDTO(id, contactReq);
     }
-     @ApiOperation(value="Delte contact", notes = "delete shesaxeb")
+     @Operation(summary = "Delete Contact by id ", description = "Contact delete  shesaxeb ")
         @DeleteMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
     public void deleteTeam(@PathVariable Long id){

@@ -12,16 +12,16 @@ import java.util.List;
  * @author vako
  */
 public interface CourseService {
+
     List<CourseDTO> getAllCourses();
 
-    CourseDTO getCourseByName(String name);
-    
-     CourseDTO getCourseById(Long id);
-    
+    CourseDTO getCourseById(Long id);
+
     CourseDTO createNewCourse(CourseDTO courseDTO);
-    
+
     CourseDTO saveCourseByDTO(Long id, CourseDTO courseDTO);
+
+    void deleteCourseById(Long id);
     
-    void deleteStudentById(Long id);
-    
+ 
 }

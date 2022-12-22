@@ -6,6 +6,7 @@ package ge.rest.example.rest.project.mapper;
 
 import ge.rest.example.rest.project.domain.Contact;
 import ge.rest.example.rest.project.model.ContactDTO;
+import ge.rest.example.rest.project.model.ContactReq;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -17,8 +18,11 @@ import org.mapstruct.factory.Mappers;
 public interface ContactMapper {
        ContactMapper INSTANCE = Mappers.getMapper(ContactMapper.class);
 
-
+//response
     ContactDTO contactToContactDTO(Contact contact);
+   //req 
+    Contact contactDtoTcontact(ContactReq contactReq);
     
-    Contact contactDtoTcontact(ContactDTO contactDTO);
+   ContactReq  contactToContactres(Contact contact);
+   
 }
