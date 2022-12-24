@@ -5,7 +5,10 @@
 package ge.rest.example.rest.project.mapper;
 
 import ge.rest.example.rest.project.domain.Course;
+import ge.rest.example.rest.project.domain.Returntype;
+import ge.rest.example.rest.project.domain.Team;
 import ge.rest.example.rest.project.model.CourseDTO;
+import ge.rest.example.rest.project.model.ReturnTypeDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -24,6 +27,15 @@ public interface CourseMapper {
     
     Course courseDtoTocourse(CourseDTO courseDTO);
     
+    ReturnTypeDTO teamToDTO(Team team);
     
+    ReturnTypeDTO courseTOdto (Course course);
+  
+    ReturnTypeDTO alltoall(Team team, Course course);
+    
+    Returntype dtoToType (ReturnTypeDTO returnTypeDTO);
+    
+     ReturnTypeDTO change1(Returntype returnType);
+   
     
 }

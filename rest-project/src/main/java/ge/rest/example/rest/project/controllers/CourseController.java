@@ -1,11 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package ge.rest.example.rest.project.controllers;
 
 import ge.rest.example.rest.project.model.CourseDTO;
 import ge.rest.example.rest.project.model.CourseListDTO;
+import ge.rest.example.rest.project.model.ReturnTypeDTO;
 import ge.rest.example.rest.project.model.TeamDTO;
 import ge.rest.example.rest.project.services.CourseService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,46 +22,56 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author vako
  */
-@Tag(name="This is my Course Controller")
+@Tag(name = "This is my Course Controller")
 @RestController
 @RequestMapping(CourseController.BASE_URL)
 public class CourseController {
-     public static final String BASE_URL = "/api/v1/courses";
-     private final CourseService courseService;
+
+    public static final String BASE_URL = "/api/v1/courses";
+    private final CourseService courseService;
 
     public CourseController(CourseService courseService) {
         this.courseService = courseService;
     }
-     @Operation(summary = "Get Course ", description = "course  shesaxeb ") 
+
+    @Operation(summary = "Get Course ", description = "course  shesaxeb ")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public CourseListDTO getallCourses(){
+    public CourseListDTO getallCourses() {
 
-        return new CourseListDTO
-                 (courseService.getAllCourses());
+        return new CourseListDTO(courseService.getAllCourses());
     }
-      
-       @Operation(summary = "Get Course by id ", description = "course  shesaxeb ") 
+
+    @Operation(summary = "Get Course by id ", description = "course  shesaxeb ")
     @GetMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
-    public CourseDTO getTeamById(@PathVariable Long id){
+    public CourseDTO getTeamById(@PathVariable Long id) {
         return courseService.getCourseById(id);
     }
+
+    @PostMapping({"/{teamId}/contact/{courseId}"})
+    @ResponseStatus(HttpStatus.OK)
+    public ReturnTypeDTO assignTeamToocourse(@PathVariable Long teamId, @PathVariable Long courseId) {
+        return courseService.assignTeamTocourse(teamId, courseId);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CourseDTO createNewTeam(@RequestBody CourseDTO courseDTO){
+    public CourseDTO createNewTeam(@RequestBody CourseDTO courseDTO) {
         return courseService.createNewCourse(courseDTO);
     }
-     @Operation(summary = "update Course ", description = "course  shesaxeb ") 
-     @PutMapping({"/{id}"})
+
+    @Operation(summary = "update Course ", description = "course  shesaxeb ")
+    @PutMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
-    public CourseDTO updateCourse(@PathVariable Long id, @RequestBody CourseDTO courseDTO){
+    public CourseDTO updateCourse(@PathVariable Long id, @RequestBody CourseDTO courseDTO) {
         return courseService.saveCourseByDTO(id, courseDTO);
     }
-       @Operation(summary = "delete Course ", description = "course  shesaxeb ") 
-     @DeleteMapping({"/{id}"})
+
+    @Operation(summary = "delete Course ", description = "course  shesaxeb ")
+    @DeleteMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
-    public void deleteStudent(@PathVariable Long id){
+    public void deleteStudent(@PathVariable Long id) {
         courseService.deleteCourseById(id);
     }
 }

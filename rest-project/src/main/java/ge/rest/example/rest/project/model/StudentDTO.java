@@ -1,4 +1,4 @@
-/*
+    /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -21,21 +21,15 @@ import lombok.NonNull;
 @AllArgsConstructor
 public class StudentDTO {
 
-    @NonNull
-    @NotBlank
-    @Size(min = 2, max = 25)
+
     private String firstname;
-    @NonNull
-    @NotBlank
-    @Size(min = 2, max = 25)
+  
     private String lastname;
-    @NonNull
-    @NotBlank
-    @Size(min = 2, max = 11)
+   
     private String idnumber;
-    @NonNull
-    @NotBlank
-    @Size(min = 2, max = 25)
+    //@NonNull
+    //@NotBlank
+  //  @Size(min = 2, max = 25)
     private String adress;
     //contact iyo
     @JsonProperty("student_url")

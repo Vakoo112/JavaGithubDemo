@@ -4,7 +4,7 @@
  */
 package ge.rest.example.rest.project.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.LocalDate;
 import lombok.Data;
 
 /**
@@ -12,13 +12,20 @@ import lombok.Data;
  * @author vako
  */
 @Data
-public class CourseDTO {
+public class ReturnTypeDTO {
+    // private  CourseDTO courseDTO;
+    // private TeamDTO teamDTO;
 
+    //private Team team;
+    //private Course course;
+    private Long newid;
     private String name;
 
     private String description;
-    
-    @JsonProperty("courseurl")
-    private String courseUrl;
+
+    private LocalDate starttime;
+    private LocalDate endtime;
+
+    private Integer maxstudentsenrolled;
 
 }

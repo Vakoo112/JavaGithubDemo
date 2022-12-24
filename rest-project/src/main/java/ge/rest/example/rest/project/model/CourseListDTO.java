@@ -16,4 +16,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class CourseListDTO {
     List<CourseDTO> courses;
+
+
 }

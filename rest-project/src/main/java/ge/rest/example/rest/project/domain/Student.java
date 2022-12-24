@@ -41,6 +41,6 @@ public class Student {
     private Set<Contact> contacts = new HashSet<>();
     @ManyToMany
     @JoinTable(name="student_team", 
-            joinColumns=@JoinColumn(name ="student_id"), inverseJoinColumns = @JoinColumn(name = "team_id"))
+            joinColumns=@JoinColumn(name ="team_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
     private Set<Team> teams = new HashSet<>();
 }

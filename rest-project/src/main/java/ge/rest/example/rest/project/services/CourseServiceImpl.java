@@ -6,11 +6,17 @@ package ge.rest.example.rest.project.services;
 
 import ge.rest.example.rest.project.controllers.CourseController;
 import ge.rest.example.rest.project.domain.Course;
+import ge.rest.example.rest.project.domain.Returntype;
+import ge.rest.example.rest.project.domain.Team;
 import ge.rest.example.rest.project.mapper.CourseMapper;
+import ge.rest.example.rest.project.mapper.TeamMapper;
 import ge.rest.example.rest.project.model.CourseDTO;
+import ge.rest.example.rest.project.model.ReturnTypeDTO;
 import ge.rest.example.rest.project.repositories.CourseRepository;
+import ge.rest.example.rest.project.repositories.ReturnRepo;
 import ge.rest.example.rest.project.repositories.TeamRepository;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
@@ -24,12 +30,17 @@ public class CourseServiceImpl implements CourseService {
     private final CourseMapper courseMapper;
     private final CourseRepository courseRepository;
     private final TeamRepository teamRepository;
-
-    public CourseServiceImpl(CourseMapper courseMapper, CourseRepository courseRepository, TeamRepository teamRepository) {
+    private final TeamMapper teamMapper;
+    private final ReturnRepo returnRepo;
+    
+    
+    public CourseServiceImpl(CourseMapper courseMapper, CourseRepository courseRepository,
+            TeamRepository teamRepository, TeamMapper teamMapper, ReturnRepo returnRepo ) {
         this.courseMapper = courseMapper;
         this.courseRepository = courseRepository;
         this.teamRepository = teamRepository;
-
+        this.teamMapper = teamMapper;
+        this.returnRepo = returnRepo;
     }
 
     @Override
@@ -44,7 +55,7 @@ public class CourseServiceImpl implements CourseService {
                 })
                 .collect(Collectors.toList());
     }
-
+   
     @Override
     public CourseDTO getCourseById(Long id) {
 
@@ -57,6 +68,7 @@ public class CourseServiceImpl implements CourseService {
                 .orElseThrow(RuntimeException::new);
 
     }
+
 
     @Override
     public CourseDTO createNewCourse(CourseDTO courseDTO) {
@@ -79,6 +91,40 @@ public class CourseServiceImpl implements CourseService {
 
     private String getCourseUrl(Long id) {
         return CourseController.BASE_URL + "/" + id;
+    }
+
+    private ReturnTypeDTO saveAdnRetuntype(Team team, Course course) {
+        Team saveTeam = teamRepository.save(team);
+        ReturnTypeDTO returnTeam = courseMapper.teamToDTO(saveTeam);
+
+        Course savecourse = courseRepository.save(course);
+        ReturnTypeDTO returnCourse = courseMapper.courseTOdto(savecourse);
+        return returnCourse;
+    }
+
+    @Override
+    public ReturnTypeDTO assignTeamTocourse(Long teamId, Long courseId) {
+        Optional<Team> teamopT = teamRepository.findById(teamId);
+        if (!teamopT.isPresent()) {
+            throw new ResourceNotFoundException();
+        }
+        Team team = teamopT.get();
+        teamRepository.save(team);
+
+        Optional<Course> courseopT = courseRepository.findById(courseId);
+        if (!courseopT.isPresent()) {
+            throw new ResourceNotFoundException();
+        }
+        Course course = courseopT.get();
+        courseRepository.save(course);
+        
+          ReturnTypeDTO alltoa11 = courseMapper.alltoall(team, course);
+         Returntype change1 = courseMapper.dtoToType(alltoa11);
+        returnRepo.save(change1);
+    
+        
+        return alltoa11;
+
     }
 
     @Override
