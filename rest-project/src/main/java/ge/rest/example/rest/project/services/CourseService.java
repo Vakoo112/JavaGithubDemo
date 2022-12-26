@@ -4,7 +4,6 @@
  */
 package ge.rest.example.rest.project.services;
 
-import ge.rest.example.rest.project.domain.Returntype;
 import ge.rest.example.rest.project.model.CourseDTO;
 import ge.rest.example.rest.project.model.ReturnTypeDTO;
 import java.util.List;
@@ -16,7 +15,8 @@ import java.util.List;
 public interface CourseService {
 
     List<CourseDTO> getAllCourses();
-   //
+    //
+
     CourseDTO getCourseById(Long id);
 
     CourseDTO createNewCourse(CourseDTO courseDTO);
@@ -24,9 +24,15 @@ public interface CourseService {
     CourseDTO saveCourseByDTO(Long id, CourseDTO courseDTO);
 
     ReturnTypeDTO assignTeamTocourse(Long teamId, Long courseId);
-    
-   
+
+    ReturnTypeDTO getActive(Long newid);
+
+    List<ReturnTypeDTO> getAllActive();
+
+    ReturnTypeDTO updateActive(Long newid, ReturnTypeDTO returnTypeDTO);
 
     void deleteCourseById(Long id);
+    
+    void DeleteActiveCourseById(Long newid);
 
 }

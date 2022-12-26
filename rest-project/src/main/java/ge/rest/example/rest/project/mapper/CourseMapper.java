@@ -18,24 +18,21 @@ import org.mapstruct.factory.Mappers;
  */
 @Mapper
 public interface CourseMapper {
-    
+
     CourseMapper INSTANCE = Mappers.getMapper(CourseMapper.class);
 
-
-
     CourseDTO courseToCourseDTO(Course course);
-    
+
     Course courseDtoTocourse(CourseDTO courseDTO);
-    
+
     ReturnTypeDTO teamToDTO(Team team);
-    
-    ReturnTypeDTO courseTOdto (Course course);
-  
+
+    ReturnTypeDTO courseTOdto(Course course);
+
     ReturnTypeDTO alltoall(Team team, Course course);
-    
-    Returntype dtoToType (ReturnTypeDTO returnTypeDTO);
-    
-     ReturnTypeDTO change1(Returntype returnType);
-   
-    
+
+    Returntype dtoToType(ReturnTypeDTO returnTypeDTO);
+
+    ReturnTypeDTO change1(Returntype returnType);
+
 }

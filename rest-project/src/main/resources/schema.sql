@@ -1,5 +1,6 @@
 create table team (id bigint not null auto_increment,starttime date, endtime date, maxstudentsenrolled integer,quality varchar(255),course_id bigint, primary key (id) );
 create table returntype (newid bigint not null auto_increment, name varchar(255), description varchar(255),starttime date, endtime date, maxstudentsenrolled integer,  primary key (newid) );
+create table studentreturntype (newid bigint not null auto_increment, firstname varchar(255), lastname varchar(255),idnumber varchar(255), adress varchar(255), contacttype varchar(255), contactvalue varchar(255),  primary key (newid) );
 create table student(id bigint not null auto_increment, firstname varchar(255), lastname varchar(255),idnumber varchar(255), adress varchar(255), contact_id bigint, primary key (id)  );
 create table course (id bigint not null auto_increment,description varchar(255), name varchar(255), primary key (id) );
 create table contact (id bigint not null auto_increment,contacttype varchar(255), contactvalue varchar(255), student_id bigint,  primary key(id))  ;

@@ -32,10 +32,9 @@ public class CourseServiceImpl implements CourseService {
     private final TeamRepository teamRepository;
     private final TeamMapper teamMapper;
     private final ReturnRepo returnRepo;
-    
-    
+
     public CourseServiceImpl(CourseMapper courseMapper, CourseRepository courseRepository,
-            TeamRepository teamRepository, TeamMapper teamMapper, ReturnRepo returnRepo ) {
+            TeamRepository teamRepository, TeamMapper teamMapper, ReturnRepo returnRepo) {
         this.courseMapper = courseMapper;
         this.courseRepository = courseRepository;
         this.teamRepository = teamRepository;
@@ -55,7 +54,7 @@ public class CourseServiceImpl implements CourseService {
                 })
                 .collect(Collectors.toList());
     }
-   
+
     @Override
     public CourseDTO getCourseById(Long id) {
 
@@ -69,6 +68,28 @@ public class CourseServiceImpl implements CourseService {
 
     }
 
+    @Override
+    public ReturnTypeDTO getActive(Long newid) {
+        Optional<Returntype> optional1 = returnRepo.findById(newid);
+        if (!optional1.isPresent()) {
+            throw new ResourceNotFoundException();
+        }
+        Returntype saveReturn = optional1.get();
+        ReturnTypeDTO Change = courseMapper.change1(saveReturn);
+        returnRepo.save(saveReturn);
+        return Change;
+    }
+
+    @Override
+    public List<ReturnTypeDTO> getAllActive() {
+        return returnRepo.findAll()
+                .stream()
+                .map(course -> {
+                    ReturnTypeDTO courseDTO = courseMapper.change1(course);
+                    return courseDTO;
+                })
+                .collect(Collectors.toList());
+    }
 
     @Override
     public CourseDTO createNewCourse(CourseDTO courseDTO) {
@@ -79,6 +100,12 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public CourseDTO saveCourseByDTO(Long id, CourseDTO courseDTO) {
         return saveAndReturnDTO(courseMapper.courseDtoTocourse(courseDTO));
+    }
+
+    @Override
+    public ReturnTypeDTO updateActive(Long newid, ReturnTypeDTO returnTypeDTO) {
+
+        return saveAdnRetuntype(courseMapper.dtoToType(returnTypeDTO));
     }
 
     private CourseDTO saveAndReturnDTO(Course course) {
@@ -93,13 +120,11 @@ public class CourseServiceImpl implements CourseService {
         return CourseController.BASE_URL + "/" + id;
     }
 
-    private ReturnTypeDTO saveAdnRetuntype(Team team, Course course) {
-        Team saveTeam = teamRepository.save(team);
-        ReturnTypeDTO returnTeam = courseMapper.teamToDTO(saveTeam);
+    private ReturnTypeDTO saveAdnRetuntype(Returntype returnType) {
+        Returntype saveType = returnRepo.save(returnType);
+        ReturnTypeDTO returnDTO = courseMapper.change1(saveType);
+        return returnDTO;
 
-        Course savecourse = courseRepository.save(course);
-        ReturnTypeDTO returnCourse = courseMapper.courseTOdto(savecourse);
-        return returnCourse;
     }
 
     @Override
@@ -117,12 +142,11 @@ public class CourseServiceImpl implements CourseService {
         }
         Course course = courseopT.get();
         courseRepository.save(course);
-        
-          ReturnTypeDTO alltoa11 = courseMapper.alltoall(team, course);
-         Returntype change1 = courseMapper.dtoToType(alltoa11);
+
+        ReturnTypeDTO alltoa11 = courseMapper.alltoall(team, course);
+        Returntype change1 = courseMapper.dtoToType(alltoa11);
         returnRepo.save(change1);
-    
-        
+
         return alltoa11;
 
     }
@@ -132,4 +156,9 @@ public class CourseServiceImpl implements CourseService {
         courseRepository.deleteById(id);
     }
 
+    @Override
+    public void DeleteActiveCourseById(Long newid) {
+        returnRepo.deleteById(newid);
+
+    }
 }

@@ -5,11 +5,17 @@
 package ge.rest.example.rest.project.services;
 
 import ge.rest.example.rest.project.controllers.StudentController;
+import ge.rest.example.rest.project.domain.Contact;
 import ge.rest.example.rest.project.domain.Student;
+import ge.rest.example.rest.project.domain.Studentreturntype;
 import ge.rest.example.rest.project.mapper.StudentMapper;
 import ge.rest.example.rest.project.model.StudentDTO;
+import ge.rest.example.rest.project.model.StudentReturnTypeDTO;
+import ge.rest.example.rest.project.repositories.ContactRepository;
 import ge.rest.example.rest.project.repositories.StudentRepository;
+import ge.rest.example.rest.project.repositories.StudentReturnRepo;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +27,15 @@ import org.springframework.stereotype.Service;
 public class StudentServiceImpl implements StudentService {
     private final StudentMapper studentMapper;
     private final StudentRepository studentRepository;
+    private final ContactRepository contactRepository;
+    private final StudentReturnRepo studentReturnRepo;
 
-    public StudentServiceImpl(StudentMapper studentMapper, StudentRepository studentRepository) {
+    public StudentServiceImpl(StudentMapper studentMapper, StudentRepository studentRepository,
+    ContactRepository contactRepository, StudentReturnRepo studentReturnRepo) {
         this.studentMapper = studentMapper;
         this.studentRepository = studentRepository;
+        this.contactRepository = contactRepository;
+        this.studentReturnRepo=studentReturnRepo;
     }
    
      @Override
@@ -39,6 +50,7 @@ public class StudentServiceImpl implements StudentService {
                 })
                 .collect(Collectors.toList());
     }
+
     
     @Override
     public StudentDTO getStudentById(Long id) {
@@ -56,6 +68,28 @@ public class StudentServiceImpl implements StudentService {
 
         return saveAndReturnDTO(studentMapper.studentDtoTostudent(studentDTO));
     }
+     @Override
+     public StudentReturnTypeDTO addContactToStudent(Long contactId, Long studentId){
+         Optional<Contact> contactOpt = contactRepository.findById(contactId);
+         if (!contactOpt.isPresent()) {
+              throw new ResourceNotFoundException();
+         }
+         Contact contactGet = contactOpt.get();
+         contactRepository.save(contactGet);
+         
+         Optional<Student> studentOpt = studentRepository.findById(studentId);
+         if(!studentOpt.isPresent()) {
+          throw new ResourceNotFoundException();
+         }
+         Student studentGet = studentOpt.get();
+         studentRepository.save(studentGet);
+         StudentReturnTypeDTO allToAll = studentMapper.allToAll(contactGet, studentGet);
+         Studentreturntype change = studentMapper.studentDTOtoType(allToAll);
+         //
+         studentReturnRepo.save(change);
+         return  allToAll;
+         
+     }
     
       private StudentDTO saveAndReturnDTO(Student student) {
         Student savedStudent = studentRepository.save(student);

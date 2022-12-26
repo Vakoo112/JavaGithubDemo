@@ -6,7 +6,9 @@ package ge.rest.example.rest.project.controllers;
 
 import ge.rest.example.rest.project.model.StudentDTO;
 import ge.rest.example.rest.project.model.StudentListDTO;
+import ge.rest.example.rest.project.model.StudentReturnTypeDTO;
 import ge.rest.example.rest.project.services.StudentService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author vako
  */
-//@Api(description="This is my Student Controller")
+@Tag(name = "This is my Student Controller")
 @RestController
 @RequestMapping(StudentController.BASE_URL)
 public class StudentController {
@@ -33,32 +35,33 @@ public class StudentController {
         this.studentService = studentService;
     }
     
-    //@ApiOperation(value="This will get a list of students", notes = "Api shesaxeb")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public StudentListDTO getListOfStudent(){
         return new StudentListDTO(studentService.getAllStudents());
     }
-    //@ApiOperation(value="This will get a student by id", notes = "Api student id")
+ 
     @GetMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
     public StudentDTO getStudentById(@PathVariable Long id){
         return studentService.getStudentById(id);
     }
-    //@ApiOperation(value="This will create a new student", notes = "Api creates shesaxeb")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public StudentDTO createNewStudent(@RequestBody StudentDTO studentDTO){
         return studentService.createNewStudent(studentDTO);
     }
-    //@ApiOperation(value="This will update ", notes = "Api update shesaxeb")
+    @PostMapping({"/{contactId}/student/{studentId}"})
+    @ResponseStatus(HttpStatus.OK)
+    public StudentReturnTypeDTO assignTeamToocourse(@PathVariable Long contactId, @PathVariable Long studentId) {
+        return studentService.addContactToStudent(contactId, studentId);
+    }
      @PutMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
     public StudentDTO updateStudent(@PathVariable Long id, @RequestBody StudentDTO studentDTO){
         return studentService.saveStudentByDTO(id, studentDTO);
     }
     
-    //@ApiOperation(value="This will delete a  student", notes = "Api delete shesaxeb")
     @DeleteMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
     public void deleteStudent(@PathVariable Long id){
