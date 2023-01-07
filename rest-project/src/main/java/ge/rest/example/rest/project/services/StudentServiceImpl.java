@@ -5,17 +5,16 @@
 package ge.rest.example.rest.project.services;
 
 import ge.rest.example.rest.project.controllers.StudentController;
-import ge.rest.example.rest.project.domain.Contact;
 import ge.rest.example.rest.project.domain.Student;
-import ge.rest.example.rest.project.domain.Studentreturntype;
+import ge.rest.example.rest.project.domain.Team;
 import ge.rest.example.rest.project.mapper.StudentMapper;
+import ge.rest.example.rest.project.model.AssignTeamToStudentDTO;
 import ge.rest.example.rest.project.model.StudentDTO;
-import ge.rest.example.rest.project.model.StudentReturnTypeDTO;
 import ge.rest.example.rest.project.repositories.ContactRepository;
 import ge.rest.example.rest.project.repositories.StudentRepository;
-import ge.rest.example.rest.project.repositories.StudentReturnRepo;
+import ge.rest.example.rest.project.repositories.TeamRepository;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
@@ -28,14 +27,14 @@ public class StudentServiceImpl implements StudentService {
     private final StudentMapper studentMapper;
     private final StudentRepository studentRepository;
     private final ContactRepository contactRepository;
-    private final StudentReturnRepo studentReturnRepo;
+    private final TeamRepository teamRepository;
 
     public StudentServiceImpl(StudentMapper studentMapper, StudentRepository studentRepository,
-    ContactRepository contactRepository, StudentReturnRepo studentReturnRepo) {
+    ContactRepository contactRepository,TeamRepository teamRepository) {
         this.studentMapper = studentMapper;
         this.studentRepository = studentRepository;
         this.contactRepository = contactRepository;
-        this.studentReturnRepo=studentReturnRepo;
+        this.teamRepository = teamRepository;
     }
    
      @Override
@@ -45,7 +44,6 @@ public class StudentServiceImpl implements StudentService {
                 .stream()
                 .map(student -> {
                    StudentDTO studentDTO = studentMapper.studentToStudentDTO(student);
-                 studentDTO.setStudentUrl(getStudentUrl(student.getId()));
                    return studentDTO;
                 })
                 .collect(Collectors.toList());
@@ -63,39 +61,35 @@ public class StudentServiceImpl implements StudentService {
                 })
                 .orElseThrow(RuntimeException::new);
     }
+     @Override
+    public  AssignTeamToStudentDTO assignStudentToTeam (Long studentId, Long teamId){
+        Set<Team> teamSet = null;
+        Team team = teamRepository.findById(teamId).get();
+        Student student = studentRepository.findById(studentId).get();
+        teamSet = student.getTeams();
+        teamSet.add(team);
+        student.setTeams(teamSet);
+        teamRepository.save(team);
+        studentRepository.save(student);
+        AssignTeamToStudentDTO assign = new AssignTeamToStudentDTO();
+        assign = studentMapper.studentToAssign(student);
+        assign.setContactId(student.getId());
+        return assign;
+        
+        
+    }
+    
     @Override
     public StudentDTO createNewStudent(StudentDTO studentDTO) {
 
         return saveAndReturnDTO(studentMapper.studentDtoTostudent(studentDTO));
     }
-     @Override
-     public StudentReturnTypeDTO addContactToStudent(Long contactId, Long studentId){
-         Optional<Contact> contactOpt = contactRepository.findById(contactId);
-         if (!contactOpt.isPresent()) {
-              throw new ResourceNotFoundException();
-         }
-         Contact contactGet = contactOpt.get();
-         contactRepository.save(contactGet);
-         
-         Optional<Student> studentOpt = studentRepository.findById(studentId);
-         if(!studentOpt.isPresent()) {
-          throw new ResourceNotFoundException();
-         }
-         Student studentGet = studentOpt.get();
-         studentRepository.save(studentGet);
-         StudentReturnTypeDTO allToAll = studentMapper.allToAll(contactGet, studentGet);
-         Studentreturntype change = studentMapper.studentDTOtoType(allToAll);
-         //
-         studentReturnRepo.save(change);
-         return  allToAll;
-         
-     }
+   
     
       private StudentDTO saveAndReturnDTO(Student student) {
         Student savedStudent = studentRepository.save(student);
         
         StudentDTO returnDto = studentMapper.studentToStudentDTO(savedStudent);
-           returnDto.setStudentUrl(getStudentUrl(savedStudent.getId()));
         return returnDto;
     }
       
@@ -105,6 +99,8 @@ public class StudentServiceImpl implements StudentService {
         student.setId(id);
         return saveAndReturnDTO(student);
     }
+    
+
     
     
      private String getStudentUrl(Long id) {

@@ -4,8 +4,10 @@
  */
 package ge.rest.example.rest.project.services;
 
+import ge.rest.example.rest.project.domain.Team;
+import ge.rest.example.rest.project.model.AssignDTO;
 import ge.rest.example.rest.project.model.TeamDTO;
-import ge.rest.example.rest.project.model.TeamListDTO;
+import ge.rest.example.rest.project.model.TeamRespponseDTO;
 import java.util.List;
 
 /**
@@ -13,13 +15,19 @@ import java.util.List;
  * @author vako
  */
 public interface TeamService {
-    List<TeamDTO> getAllTeam();
+    List<TeamRespponseDTO> getAllTeam();
 
-    TeamDTO getTeamsById(Long id);
+    TeamRespponseDTO getTeamsById(Long id);
     
-    TeamDTO createNewTeam(TeamDTO teamDTO);
+    AssignDTO assignStudentToTeam (Long teamId, Long studentId);
     
-    TeamDTO saveCTeamByDTO(Long id, TeamDTO teamDTO);
+    TeamRespponseDTO createNewTeam(TeamDTO teamDTO);
+    
+    TeamRespponseDTO updateTeam(Long id,TeamDTO teamDTO);
+    
+ //   TeamDTO saveCTeamByDTO(Long id, TeamDTO teamDTO);
+    
+   
     
     void deleteTeamById(Long id);
     

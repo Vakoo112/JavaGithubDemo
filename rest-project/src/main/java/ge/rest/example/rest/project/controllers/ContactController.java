@@ -6,6 +6,7 @@ package ge.rest.example.rest.project.controllers;
 
 import ge.rest.example.rest.project.model.ContactListDTO;
 import ge.rest.example.rest.project.model.ContactReq;
+import ge.rest.example.rest.project.model.ContactResponseDTO;
 import ge.rest.example.rest.project.services.ContactService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -45,22 +46,22 @@ public class ContactController {
     @Operation(summary = "Get Contact by id ", description = "Contact id  shesaxeb ")
     @GetMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
-    public ContactReq getContactById(@PathVariable Long id){
+    public ContactResponseDTO getContactById(@PathVariable Long id){
         return contactService.getContactsById(id);
     }
     
   @Operation(summary = "Create Contact  ", description = "Contact sheqmnis  shesaxeb ")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ContactReq createNewContact(@RequestBody ContactReq contactReq){
+    public ContactResponseDTO createNewContact(@RequestBody ContactReq contactReq){
         return contactService.createNewContact(contactReq);
     }
-   @Operation(summary = "update Contact ", description = "Contact update  shesaxeb ")
+  @Operation(summary = "update Contact ", description = "Contact update  shesaxeb ")
      @PutMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
-    public ContactReq updateContact(@PathVariable Long id, @RequestBody ContactReq contactReq){
+    public ContactResponseDTO updateContact(@PathVariable Long id, @RequestBody ContactReq contactReq){
 
-        return contactService.saveContactByDTO(id, contactReq);
+        return contactService.updateContactByDTO(id, contactReq);
     }
      @Operation(summary = "Delete Contact by id ", description = "Contact delete  shesaxeb ")
         @DeleteMapping({"/{id}"})

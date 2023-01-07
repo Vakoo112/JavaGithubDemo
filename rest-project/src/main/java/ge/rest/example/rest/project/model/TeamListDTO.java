@@ -15,5 +15,5 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class TeamListDTO {
-    List<TeamDTO> teams;
+    List<TeamRespponseDTO> teams;
 }

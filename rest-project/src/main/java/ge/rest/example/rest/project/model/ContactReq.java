@@ -19,6 +19,7 @@ import lombok.NoArgsConstructor;
 public class ContactReq {
      private String contacttype;
     private String contactvalue;
-    @JsonProperty("contact_url")
-    private String contactUrl;
+   // @JsonProperty("contact_url")
+   // private String contactUrl;
+    private Long studentId;
 }

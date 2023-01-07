@@ -4,8 +4,8 @@
  */
 package ge.rest.example.rest.project.model;
 
-import java.util.List;
-import lombok.AllArgsConstructor;
+import java.time.LocalDate;
+import java.util.Set;
 import lombok.Data;
 
 /**
@@ -13,7 +13,13 @@ import lombok.Data;
  * @author vako
  */
 @Data
-@AllArgsConstructor
-public class StudentTypeListDTO {
-    List<StudentReturnTypeDTO> studentReturnTypeDTO;
+public class AssignDTO {
+
+    private String teamname;
+    private LocalDate starttime;
+    private LocalDate endtime;
+
+    private Integer maxstudentsenrolled;
+    private Long courseId;
+    private Set<StudentDTO> students;
 }

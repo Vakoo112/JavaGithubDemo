@@ -13,10 +13,14 @@ import lombok.Data;
  */
 @Data
 public class TeamDTO {
+
     //private Long id;
-    private LocalDate  starttime;
-    private LocalDate  endtime;
-     
+    private String teamname;
+    private LocalDate starttime;
+    private LocalDate endtime;
+
     private Integer maxstudentsenrolled;
-   
+    private Long courseId;
+
+
 }

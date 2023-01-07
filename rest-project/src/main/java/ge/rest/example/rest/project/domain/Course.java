@@ -36,5 +36,14 @@ public class Course {
     @OneToMany(cascade=CascadeType.ALL, mappedBy="course")
     private Set<Team> teams = new HashSet<>();
 
+    
+    public void addTea(Team team) {
+      teams.add(team);
+    }
+    
+    public void removeTeam(Team team) {
+      teams.remove(team);
+    }
+    
    
 }

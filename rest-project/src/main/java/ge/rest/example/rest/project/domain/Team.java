@@ -4,11 +4,10 @@
  */
 package ge.rest.example.rest.project.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDate;
 import java.util.Set;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,21 +26,19 @@ import lombok.Setter;
 @EqualsAndHashCode(exclude = {"students"})
 @Entity
 public class Team {
-    
+
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private LocalDate  starttime;
-    private LocalDate  endtime;
- 
+    private String teamname;
+    private LocalDate starttime;
+    private LocalDate endtime;
+
     private Integer maxstudentsenrolled;
-    
+
     @ManyToOne
-    private Course course; 
-    
-    @ManyToMany(mappedBy="teams")
+    private Course course;
+    @ManyToMany(mappedBy = "teams")
     private Set<Student> students;
-    
-    @Enumerated(value=EnumType.STRING)
-    private Quality quality;
+
 }

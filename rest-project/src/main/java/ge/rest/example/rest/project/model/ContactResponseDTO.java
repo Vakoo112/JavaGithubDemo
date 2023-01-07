@@ -4,8 +4,6 @@
  */
 package ge.rest.example.rest.project.model;
 
-import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -13,7 +11,10 @@ import lombok.Data;
  * @author vako
  */
 @Data
-@AllArgsConstructor
-public class ReturnTypeListDTO {
-     List<ReturnTypeDTO> returnTypeDTO;
+public class ContactResponseDTO {
+
+    private String contacttype;
+    private String contactvalue;
+
+    private StudentDTO student;
 }

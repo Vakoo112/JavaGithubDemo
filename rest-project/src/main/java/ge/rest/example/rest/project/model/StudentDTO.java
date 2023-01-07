@@ -5,6 +5,8 @@
 package ge.rest.example.rest.project.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import ge.rest.example.rest.project.domain.Contact;
+import java.util.Set;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -32,7 +34,10 @@ public class StudentDTO {
   //  @Size(min = 2, max = 25)
     private String adress;
     //contact iyo
-    @JsonProperty("student_url")
-    private String studentUrl;
+    //@JsonProperty("student_url")
+  //  private String studentUrl;
+    
+    private Long contactId;
+    
 
 }

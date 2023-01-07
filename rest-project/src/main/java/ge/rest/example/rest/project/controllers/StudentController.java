@@ -4,9 +4,9 @@
  */
 package ge.rest.example.rest.project.controllers;
 
+import ge.rest.example.rest.project.model.AssignTeamToStudentDTO;
 import ge.rest.example.rest.project.model.StudentDTO;
 import ge.rest.example.rest.project.model.StudentListDTO;
-import ge.rest.example.rest.project.model.StudentReturnTypeDTO;
 import ge.rest.example.rest.project.services.StudentService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
@@ -51,11 +51,13 @@ public class StudentController {
     public StudentDTO createNewStudent(@RequestBody StudentDTO studentDTO){
         return studentService.createNewStudent(studentDTO);
     }
-    @PostMapping({"/{contactId}/student/{studentId}"})
-    @ResponseStatus(HttpStatus.OK)
-    public StudentReturnTypeDTO assignTeamToocourse(@PathVariable Long contactId, @PathVariable Long studentId) {
-        return studentService.addContactToStudent(contactId, studentId);
+    
+      @PostMapping("/{studentId}/student/{teamId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public  AssignTeamToStudentDTO assignStudentToTeam (Long studentId, Long teamId){
+        return studentService.assignStudentToTeam(studentId, teamId);
     }
+    
      @PutMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
     public StudentDTO updateStudent(@PathVariable Long id, @RequestBody StudentDTO studentDTO){

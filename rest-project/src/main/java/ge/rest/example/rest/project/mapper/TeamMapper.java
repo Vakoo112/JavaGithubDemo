@@ -5,7 +5,9 @@
 package ge.rest.example.rest.project.mapper;
 
 import ge.rest.example.rest.project.domain.Team;
+import ge.rest.example.rest.project.model.AssignDTO;
 import ge.rest.example.rest.project.model.TeamDTO;
+import ge.rest.example.rest.project.model.TeamRespponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -16,9 +18,14 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface TeamMapper {
     TeamMapper INSTANCE = Mappers.getMapper(TeamMapper.class);
-
+    
     TeamDTO teamToTeamDTO(Team team);
-
+    
     Team teamDtoToteam(TeamDTO teamDTO);
     
+    TeamRespponseDTO teamToResponse(Team team);
+    
+    AssignDTO teamtoAssign(Team team);
+    
+
 }

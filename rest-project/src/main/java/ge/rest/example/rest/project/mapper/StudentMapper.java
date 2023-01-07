@@ -4,11 +4,9 @@
  */
 package ge.rest.example.rest.project.mapper;
 
-import ge.rest.example.rest.project.domain.Contact;
 import ge.rest.example.rest.project.domain.Student;
-import ge.rest.example.rest.project.domain.Studentreturntype;
+import ge.rest.example.rest.project.model.AssignTeamToStudentDTO;
 import ge.rest.example.rest.project.model.StudentDTO;
-import ge.rest.example.rest.project.model.StudentReturnTypeDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -24,10 +22,8 @@ public interface StudentMapper {
     StudentDTO studentToStudentDTO(Student student);
 
     Student studentDtoTostudent(StudentDTO studentDTO);
-
-    StudentReturnTypeDTO allToAll(Contact contac, Student student);
-
-    Studentreturntype studentDTOtoType(StudentReturnTypeDTO studentReturnTypeDTO);
     
-          StudentReturnTypeDTO    changeTypeToDTO    (Studentreturntype studentreturntype);
+    AssignTeamToStudentDTO studentToAssign(Student student);
+
+    
 }

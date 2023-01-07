@@ -4,6 +4,7 @@
  */
 package ge.rest.example.rest.project.repositories;
 
+import ge.rest.example.rest.project.domain.Course;
 import ge.rest.example.rest.project.domain.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,5 +13,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author vako
  */
 public interface TeamRepository extends JpaRepository<Team,Long> {
-    
+    Course findByid(Long id);
 }

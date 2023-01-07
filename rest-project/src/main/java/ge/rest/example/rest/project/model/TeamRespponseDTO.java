@@ -4,6 +4,8 @@
  */
 package ge.rest.example.rest.project.model;
 
+import ge.rest.example.rest.project.domain.Course;
+import java.time.LocalDate;
 import lombok.Data;
 
 /**
@@ -11,13 +13,13 @@ import lombok.Data;
  * @author vako
  */
 @Data
-public class StudentReturnTypeDTO {
+public class TeamRespponseDTO {
 
-    private Long newid;
-    private String firstname;
-    private String lastname;
-    private String idnumber;
-    private String adress;
-    private String contacttype;
-    private String contactvalue;
+    private String teamname;
+    private LocalDate starttime;
+    private LocalDate endtime;
+
+    private Integer maxstudentsenrolled;
+
+    private CourseDTO course;
 }

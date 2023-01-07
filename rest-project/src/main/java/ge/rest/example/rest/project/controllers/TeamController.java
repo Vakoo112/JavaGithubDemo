@@ -4,8 +4,11 @@
  */
 package ge.rest.example.rest.project.controllers;
 
+import ge.rest.example.rest.project.domain.Team;
+import ge.rest.example.rest.project.model.AssignDTO;
 import ge.rest.example.rest.project.model.TeamDTO;
 import ge.rest.example.rest.project.model.TeamListDTO;
+import ge.rest.example.rest.project.model.TeamRespponseDTO;
 import ge.rest.example.rest.project.services.TeamService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,23 +47,28 @@ public class TeamController {
     //@ApiOperation(value="Get team by id ", notes = "team id shesaxeb")
     @GetMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
-    public TeamDTO getTeamById(@PathVariable Long id){
+    public TeamRespponseDTO getTeamById(@PathVariable Long id){
         return teamService.getTeamsById(id);
     }
      // @ApiOperation(value="This will create a new team", notes = "Api creates shesaxeb")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TeamDTO createNewTeam(@RequestBody TeamDTO teamDTO){
+    public TeamRespponseDTO createNewTeam(@RequestBody TeamDTO teamDTO){
         return teamService.createNewTeam(teamDTO);
     }
-   // @ApiOperation(value="Update team", notes = " update shesaxeb")
-     @PutMapping({"/{id}"})
-    @ResponseStatus(HttpStatus.OK)
-    public TeamDTO updateTeam(@PathVariable Long id, @RequestBody TeamDTO teamDTO){
-
-        return teamService.saveCTeamByDTO(id, teamDTO);
+    //--
+    @PostMapping("/{teamId}/student/{studentId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public AssignDTO assignStudentToTeam(@PathVariable Long teamId, @PathVariable Long studentId){
+        return teamService.assignStudentToTeam(teamId, studentId);
     }
-   // @ApiOperation(value="Delte team", notes = "delete shesaxeb")
+   // @ApiOperation(value="Update team", notes = " update shesaxeb")
+    @PutMapping({"/{id}"})
+    @ResponseStatus(HttpStatus.OK)
+    public TeamRespponseDTO updateTeam(@PathVariable Long id, @RequestBody TeamDTO teamDTO){
+
+     return teamService.updateTeam(id, teamDTO);
+  }
         @DeleteMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
     public void deleteTeam(@PathVariable Long id){
