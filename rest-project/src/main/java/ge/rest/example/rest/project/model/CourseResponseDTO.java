@@ -4,7 +4,6 @@
  */
 package ge.rest.example.rest.project.model;
 
-import ge.rest.example.rest.project.domain.ContactType;
 import lombok.Data;
 
 /**
@@ -12,11 +11,11 @@ import lombok.Data;
  * @author vako
  */
 @Data
-public class ContactResponseDTO {
-    private ContactType contacttype;
-    private String contactvalue;
+public class CourseResponseDTO {
 
-    private StudentDTO student;
-    private Long studentId;
-    private Long contactId;
+    private String name;
+
+    private String description;
+    
+    private Long courseId;
 }

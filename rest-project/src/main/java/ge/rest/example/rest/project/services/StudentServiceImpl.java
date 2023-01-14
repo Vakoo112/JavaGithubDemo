@@ -4,110 +4,116 @@
  */
 package ge.rest.example.rest.project.services;
 
-import ge.rest.example.rest.project.controllers.StudentController;
+import ge.rest.example.rest.project.controllers.RestResponseEntityExceptionHandler;
 import ge.rest.example.rest.project.domain.Student;
-import ge.rest.example.rest.project.domain.Team;
 import ge.rest.example.rest.project.mapper.StudentMapper;
-import ge.rest.example.rest.project.model.AssignTeamToStudentDTO;
+import ge.rest.example.rest.project.mapper.TeamMapper;
 import ge.rest.example.rest.project.model.StudentDTO;
+import ge.rest.example.rest.project.model.StudentResponseDTO;
 import ge.rest.example.rest.project.repositories.ContactRepository;
 import ge.rest.example.rest.project.repositories.StudentRepository;
 import ge.rest.example.rest.project.repositories.TeamRepository;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author vako
  */
+
 @Service
 public class StudentServiceImpl implements StudentService {
     private final StudentMapper studentMapper;
+    private final TeamMapper teamMapper;
     private final StudentRepository studentRepository;
     private final ContactRepository contactRepository;
     private final TeamRepository teamRepository;
 
-    public StudentServiceImpl(StudentMapper studentMapper, StudentRepository studentRepository,
-    ContactRepository contactRepository,TeamRepository teamRepository) {
+    public StudentServiceImpl(StudentMapper studentMapper,TeamMapper teamMapper, StudentRepository studentRepository,
+    ContactRepository contactRepository,TeamRepository teamRepository, RestResponseEntityExceptionHandler 
+            restResponseEntityExceptionHandler) {
         this.studentMapper = studentMapper;
+        this.teamMapper=teamMapper;
         this.studentRepository = studentRepository;
         this.contactRepository = contactRepository;
         this.teamRepository = teamRepository;
     }
+    
+    
    
+
      @Override
-    public  List<StudentDTO> getAllStudents() {
+    public  List<StudentResponseDTO> getAllStudents() {
         return studentRepository
                 .findAll()
                 .stream()
                 .map(student -> {
-                   StudentDTO studentDTO = studentMapper.studentToStudentDTO(student);
-                   return studentDTO;
+                   StudentResponseDTO studentResponseDTO = studentMapper.studentToREsponse(student);
+                   return studentResponseDTO;
                 })
                 .collect(Collectors.toList());
     }
 
     
     @Override
-    public StudentDTO getStudentById(Long id) {
+    public StudentResponseDTO getStudentById(Long id) {
 
-        return studentRepository.findById(id)
-                .map(studentMapper::studentToStudentDTO)
-                .map(studentDTO -> {
-                   
-                    return studentDTO;
-                })
-                .orElseThrow(RuntimeException::new);
-    }
-     @Override
-    public  AssignTeamToStudentDTO assignStudentToTeam (Long studentId, Long teamId){
-        Set<Team> teamSet = null;
-        Team team = teamRepository.findById(teamId).get();
-        Student student = studentRepository.findById(studentId).get();
-        teamSet = student.getTeams();
-        teamSet.add(team);
-        student.setTeams(teamSet);
-        teamRepository.save(team);
-        studentRepository.save(student);
-        AssignTeamToStudentDTO assign = new AssignTeamToStudentDTO();
-        assign = studentMapper.studentToAssign(student);
-        assign.setContactId(student.getId());
-        return assign;
+        Optional<Student> studentOPT = studentRepository.findById(id);
+        Student student = studentOPT.get();
         
-        
-    }
-    
-    @Override
-    public StudentDTO createNewStudent(StudentDTO studentDTO) {
-
-        return saveAndReturnDTO(studentMapper.studentDtoTostudent(studentDTO));
+        StudentResponseDTO response = new StudentResponseDTO();
+        response = studentMapper.studentToREsponse(student);
+        return response;
     }
    
+   
     
-      private StudentDTO saveAndReturnDTO(Student student) {
-        Student savedStudent = studentRepository.save(student);
-        
-        StudentDTO returnDto = studentMapper.studentToStudentDTO(savedStudent);
-        return returnDto;
-    }
-      
-      @Override
-    public StudentDTO saveStudentByDTO(Long id, StudentDTO studentDTO) {
-        Student student = studentMapper.studentDtoTostudent(studentDTO);
-        student.setId(id);
-        return saveAndReturnDTO(student);
-    }
-    
-
-    
-    
-     private String getStudentUrl(Long id) {
-        return StudentController.BASE_URL + "/" + id;
-    }
+    @Override
+    @Transactional
+    public StudentResponseDTO createNewStudent(StudentDTO studentDTO) {
      
+      Student student = new Student();
+      student.setAdress(studentDTO.getAdress());
+      student.setFirstname(studentDTO.getFirstname());
+      student.setLastname(studentDTO.getLastname());
+      student.setIdnumber(studentDTO.getIdnumber());
+     
+      studentRepository.save(student);
+      StudentResponseDTO response = new StudentResponseDTO();
+      response.setAdress(student.getAdress());
+      response.setFirstname(student.getFirstname());
+      response.setLastname(student.getLastname());
+      response.setIdnumber(student.getIdnumber());
+      response.setId(student.getId());
+      
+     
+      return response;
+      
+    }
+   
+   @Override
+   @Transactional
+   public StudentResponseDTO updateStudent(Long id, StudentDTO studentDTO) {
+       Student student = studentRepository.findById(id).get();
+       student.setAdress(studentDTO.getAdress());
+       student.setFirstname(studentDTO.getFirstname());
+       student.setLastname(studentDTO.getLastname());
+       student.setIdnumber(studentDTO.getIdnumber());
+       
+       StudentResponseDTO response = new StudentResponseDTO();
+       response.setAdress(student.getAdress());
+       response.setFirstname(student.getFirstname());
+       response.setLastname(student.getLastname());
+       response.setIdnumber(student.getIdnumber());
+       response.setId(student.getId());
+       return response;
+   }
+   
      @Override
+     @Transactional
     public void deleteStudentById(Long id) {
         studentRepository.deleteById(id);
     }

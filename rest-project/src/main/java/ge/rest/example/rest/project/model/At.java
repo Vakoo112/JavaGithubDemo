@@ -5,6 +5,7 @@
 package ge.rest.example.rest.project.model;
 
 import java.time.LocalDate;
+import java.util.Set;
 import lombok.Data;
 
 /**
@@ -12,18 +13,14 @@ import lombok.Data;
  * @author vako
  */
 @Data
-public class TeamRespponseDTO {
-
+public class At {
+      private long id;
     private String teamname;
     private LocalDate starttime;
     private LocalDate endtime;
-
     private Integer maxstudentsenrolled;
-    
-    //--es wasashlelia
-    private boolean finished;
-    private boolean deleted;
-    private Long teamId;
-
-    private CourseDTO course;
+    private boolean finished = Boolean.FALSE;
+    private boolean deleted = Boolean.FALSE;
+    private CourseResponseDTO course;
+    private Set<StudentResponseDTO> students;
 }

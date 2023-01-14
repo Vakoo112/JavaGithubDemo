@@ -16,6 +16,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,8 +27,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = {"courses"})
 @Entity
+@Table(name = "student")
 public class Student {
     
     @Id
@@ -39,8 +40,6 @@ public class Student {
     private String adress;
     @OneToMany( mappedBy="student")
     private Set<Contact> contacts = new HashSet<>();
-    @ManyToMany
-    @JoinTable(name="student_team", 
-            joinColumns=@JoinColumn(name ="team_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))
+    @ManyToMany(mappedBy = "students")
     private Set<Team> teams = new HashSet<>();
 }

@@ -2,6 +2,7 @@ package ge.rest.example.rest.project.controllers;
 
 import ge.rest.example.rest.project.model.CourseDTO;
 import ge.rest.example.rest.project.model.CourseListDTO;
+import ge.rest.example.rest.project.model.CourseResponseDTO;
 import ge.rest.example.rest.project.services.CourseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -43,22 +44,22 @@ public class CourseController {
     @Operation(summary = "Get Course by id ", description = "course  shesaxeb ")
     @GetMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
-    public CourseDTO getTeamById(@PathVariable Long id) {
+    public CourseResponseDTO getTeamById(@PathVariable Long id) {
         return courseService.getCourseById(id);
     }
 
     @Operation(summary = "add teamToCourse ", description = "Activecourse  shesaxeb ")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CourseDTO createNewTeam(@RequestBody CourseDTO courseDTO) {
+    public CourseResponseDTO createNewTeam(@RequestBody CourseDTO courseDTO) {
         return courseService.createNewCourse(courseDTO);
     }
 
     @Operation(summary = "update Course ", description = "course  shesaxeb ")
     @PutMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
-    public CourseDTO updateCourse(@PathVariable Long id, @RequestBody CourseDTO courseDTO) {
-        return courseService.saveCourseByDTO(id, courseDTO);
+    public CourseResponseDTO updateCourse(@PathVariable Long id, @RequestBody CourseDTO courseDTO) {
+        return courseService.updateCourseByDTO(id, courseDTO);
     }
 
     @Operation(summary = "delete Course ", description = "course  shesaxeb ")

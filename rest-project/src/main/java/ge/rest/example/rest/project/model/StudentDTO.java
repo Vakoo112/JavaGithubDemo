@@ -33,11 +33,8 @@ public class StudentDTO {
     //@NotBlank
   //  @Size(min = 2, max = 25)
     private String adress;
-    //contact iyo
-    //@JsonProperty("student_url")
-  //  private String studentUrl;
-    
-    private Long contactId;
+   
+  //  private Long contactId;
     
 
 }

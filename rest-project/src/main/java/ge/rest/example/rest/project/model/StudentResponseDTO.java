@@ -4,7 +4,6 @@
  */
 package ge.rest.example.rest.project.model;
 
-import java.time.LocalDate;
 import java.util.Set;
 import lombok.Data;
 
@@ -13,15 +12,11 @@ import lombok.Data;
  * @author vako
  */
 @Data
-public class AssignTeamToStudentDTO {
-        private Long id;
+public class StudentResponseDTO {
+     private Long id;
     private String firstname;
     private String lastname;
     private String idnumber;
     private String adress;
-    private Long contactId;
     private Set<ContactReq> contacts;
-    private Set<TeamRespponseDTO> teams;
-
-
 }

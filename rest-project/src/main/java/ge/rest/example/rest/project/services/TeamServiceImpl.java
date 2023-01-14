@@ -8,9 +8,8 @@ import ge.rest.example.rest.project.domain.Course;
 import ge.rest.example.rest.project.domain.Student;
 import ge.rest.example.rest.project.domain.Team;
 import ge.rest.example.rest.project.mapper.TeamMapper;
-import ge.rest.example.rest.project.model.AssignDTO;
+import ge.rest.example.rest.project.model.At;
 import ge.rest.example.rest.project.model.CourseDTO;
-import ge.rest.example.rest.project.model.StudentDTO;
 import ge.rest.example.rest.project.model.TeamDTO;
 import ge.rest.example.rest.project.model.TeamRespponseDTO;
 import ge.rest.example.rest.project.repositories.CourseRepository;
@@ -18,9 +17,9 @@ import ge.rest.example.rest.project.repositories.StudentRepository;
 import ge.rest.example.rest.project.repositories.TeamRepository;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -43,6 +42,20 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    public List<At> getActiveTeams() {
+        return teamRepository
+                .findAll()
+                .stream()
+                .map(team -> {
+                    At assignTeamToStudentDTO = teamMapper.teamToAssign(team);
+                    
+
+                    return assignTeamToStudentDTO;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<TeamRespponseDTO> getAllTeam() {
 
         return teamRepository
@@ -50,7 +63,7 @@ public class TeamServiceImpl implements TeamService {
                 .stream()
                 .map(team -> {
                     TeamRespponseDTO teamRespponseDTO = teamMapper.teamToResponse(team);
-
+                    teamRespponseDTO.setTeamId(team.getId());
                     return teamRespponseDTO;
                 })
                 .collect(Collectors.toList());
@@ -61,7 +74,7 @@ public class TeamServiceImpl implements TeamService {
 
         Optional<Team> teamOPT = teamRepository.findById(id);
         Team team = teamOPT.get();
-        Course course = courseRepository.findById(team.getId()).get();
+        Course course = courseRepository.findById(team.getCourse().getId()).get();
         CourseDTO courseDTO = new CourseDTO();
         courseDTO.setName(course.getName());
         courseDTO.setDescription(course.getDescription());
@@ -70,37 +83,41 @@ public class TeamServiceImpl implements TeamService {
         teamResponse.setStarttime(team.getStarttime());
         teamResponse.setEndtime(team.getEndtime());
         teamResponse.setMaxstudentsenrolled(team.getMaxstudentsenrolled());
+        teamResponse.setTeamId(team.getId());
+        teamResponse.setFinished(team.isFinished());
+        teamResponse.setDeleted(team.isDeleted());
         teamResponse.setCourse(courseDTO);
 
         return teamResponse;
 
     }
 
-    //--
     @Override
-    public AssignDTO assignStudentToTeam(Long teamId, Long studentId) {
-        Set<Student> studentSet = null;
+    @Transactional
+    public At assignStudentToTeam(Long teamId, Long studentId) {
         Team team = teamRepository.findById(teamId).get();
+        if (team.isDeleted() == true) {
+            throw new RuntimeException("team is deactivated");
+        }
         Student student = studentRepository.findById(studentId).get();
-        studentSet = team.getStudents();
-        studentSet.add(student);
-        team.setStudents(studentSet);
-        //teamRepository.save(team);
-        //studentRepository.save(student);
-        Set<StudentDTO> studentSetDTO = null;
-        AssignDTO assign = new AssignDTO();
-        assign.setCourseId(team.getCourse().getId());
-        assign = teamMapper.teamtoAssign(team);
-        teamRepository.save(team);
-        studentRepository.save(student);
-        return assign;
+        team.getStudents().add(student);
+          if(team.getMaxstudentsenrolled() >= team.getStudents().size()) {
+        At assign = new At();
+        assign = teamMapper.teamToAssign(team);
 
+        return assign;
+          } else {
+           throw new RuntimeException("Team is full");   
+          }        
+         
     }
 
+   
+    //--
     @Override
+    @Transactional
     public TeamRespponseDTO createNewTeam(TeamDTO teamDTO) {
         Course course = courseRepository.findById(teamDTO.getCourseId()).get();
-
         Team team = new Team();
         //
 
@@ -121,12 +138,16 @@ public class TeamServiceImpl implements TeamService {
         team1.setTeamname(team.getTeamname());
         team1.setStarttime(team.getStarttime());
         team1.setMaxstudentsenrolled(team.getMaxstudentsenrolled());
+        team1.setTeamId(team.getId());
+        team1.setDeleted(false);
+        team1.setFinished(false);
         team1.setCourse(coursedto);
 
         return team1;
     }
 
     @Override
+    @Transactional
     public TeamRespponseDTO updateTeam(Long id, TeamDTO teamDTO) {
         Course course = courseRepository.findById(teamDTO.getCourseId()).get();
         Optional<Team> teamOPT = teamRepository.findById(id);
@@ -137,7 +158,6 @@ public class TeamServiceImpl implements TeamService {
         team.setMaxstudentsenrolled(teamDTO.getMaxstudentsenrolled());
         team.setCourse(course);
 
-        team = teamRepository.save(team);
 
         CourseDTO courseDTO = new CourseDTO();
         courseDTO.setName(course.getName());
@@ -148,14 +168,39 @@ public class TeamServiceImpl implements TeamService {
         teamResponse.setStarttime(team.getStarttime());
         teamResponse.setEndtime(team.getEndtime());
         teamResponse.setCourse(courseDTO);
+        teamResponse.setTeamId(team.getId());
+        teamResponse.setDeleted(false);
+        teamResponse.setDeleted(false);
         return teamResponse;
     }
 
     @Override
+    @Transactional
     public void deleteTeamById(Long id) {
+        Optional<Team> teamOPT = teamRepository.findById(id);
 
-        teamRepository.deleteById(id);
+        Team team1 = teamOPT.get();
 
+        if (team1.isDeleted() == true) {
+            teamRepository.deleteById(team1.getId());
+        } else if (team1.getStudents().isEmpty()) {
+            teamRepository.deleteById(team1.getId());
+        } else {
+            throw new IllegalArgumentException("Team is active");
+        }
     }
 
+    @Override
+    @Transactional
+    public void softDeleteTeamById(Long teamId) {
+        Optional<Team> teamOPT = teamRepository.findById(teamId);
+        Team team1 = teamOPT.get();
+        if (team1.getStudents() != null) {
+            team1.setDeleted(true);
+            teamRepository.save(team1);
+        } else {
+            throw new RuntimeException("Team can be hard deleted");
+        }
+
+    }
 }

@@ -5,6 +5,7 @@
 package ge.rest.example.rest.project.services;
 
 import ge.rest.example.rest.project.model.CourseDTO;
+import ge.rest.example.rest.project.model.CourseResponseDTO;
 import java.util.List;
 
 /**
@@ -13,14 +14,14 @@ import java.util.List;
  */
 public interface CourseService {
 
-    List<CourseDTO> getAllCourses();
+    List<CourseResponseDTO> getAllCourses();
     //
 
-    CourseDTO getCourseById(Long id);
+    CourseResponseDTO getCourseById(Long id);
 
-    CourseDTO createNewCourse(CourseDTO courseDTO);
+    CourseResponseDTO createNewCourse(CourseDTO courseDTO);
 
-    CourseDTO saveCourseByDTO(Long id, CourseDTO courseDTO);
+    CourseResponseDTO updateCourseByDTO(Long id, CourseDTO courseDTO);
 
     void deleteCourseById(Long id);
 

@@ -21,7 +21,7 @@ public class CourseDTO {
 
     private String description;
     
-    @JsonProperty("courseurl")
-    private String courseUrl;
-
+ //   @JsonProperty("courseurl")
+   // private String courseUrl;
+      
 }

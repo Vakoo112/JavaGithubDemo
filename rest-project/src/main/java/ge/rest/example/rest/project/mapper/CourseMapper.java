@@ -6,6 +6,7 @@ package ge.rest.example.rest.project.mapper;
 
 import ge.rest.example.rest.project.domain.Course;
 import ge.rest.example.rest.project.model.CourseDTO;
+import ge.rest.example.rest.project.model.CourseResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -21,5 +22,7 @@ public interface CourseMapper {
     CourseDTO courseToCourseDTO(Course course);
 
     Course courseDtoTocourse(CourseDTO courseDTO);
+    
+    CourseResponseDTO courseToresponse(Course course);
 
 }

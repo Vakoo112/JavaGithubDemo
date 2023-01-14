@@ -4,8 +4,8 @@
  */
 package ge.rest.example.rest.project.services;
 
-import ge.rest.example.rest.project.model.AssignTeamToStudentDTO;
 import ge.rest.example.rest.project.model.StudentDTO;
+import ge.rest.example.rest.project.model.StudentResponseDTO;
 import java.util.List;
 
 /**
@@ -14,15 +14,14 @@ import java.util.List;
  */
 public interface StudentService {
 
-    List<StudentDTO> getAllStudents();
+    List<StudentResponseDTO> getAllStudents();
 
-    StudentDTO getStudentById(Long id);
+    StudentResponseDTO getStudentById(Long id);
+
+    StudentResponseDTO createNewStudent(StudentDTO studentDTO);
     
-    AssignTeamToStudentDTO assignStudentToTeam (Long studentId, Long teamId);
-
-    StudentDTO createNewStudent(StudentDTO studentDTO);
-
-    StudentDTO saveStudentByDTO(Long id, StudentDTO studentDTO);
+     StudentResponseDTO updateStudent(Long id, StudentDTO studentDTO);
 
     void deleteStudentById(Long id);
+
 }

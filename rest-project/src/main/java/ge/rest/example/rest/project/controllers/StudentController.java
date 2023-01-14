@@ -4,9 +4,9 @@
  */
 package ge.rest.example.rest.project.controllers;
 
-import ge.rest.example.rest.project.model.AssignTeamToStudentDTO;
 import ge.rest.example.rest.project.model.StudentDTO;
 import ge.rest.example.rest.project.model.StudentListDTO;
+import ge.rest.example.rest.project.model.StudentResponseDTO;
 import ge.rest.example.rest.project.services.StudentService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
@@ -28,45 +28,44 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(StudentController.BASE_URL)
 public class StudentController {
+
     public static final String BASE_URL = "/api/v1/students";
     private final StudentService studentService;
 
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
-    
+
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public StudentListDTO getListOfStudent(){
+    public StudentListDTO getListOfStudent() {
         return new StudentListDTO(studentService.getAllStudents());
     }
- 
+
     @GetMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
-    public StudentDTO getStudentById(@PathVariable Long id){
+    public StudentResponseDTO getStudentById(@PathVariable Long id) {
         return studentService.getStudentById(id);
     }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public StudentDTO createNewStudent(@RequestBody StudentDTO studentDTO){
+    public StudentResponseDTO createNewStudent(@RequestBody StudentDTO studentDTO) {
         return studentService.createNewStudent(studentDTO);
     }
-    
-      @PostMapping("/{studentId}/student/{teamId}")
-    @ResponseStatus(HttpStatus.CREATED)
-    public  AssignTeamToStudentDTO assignStudentToTeam (Long studentId, Long teamId){
-        return studentService.assignStudentToTeam(studentId, teamId);
-    }
-    
-     @PutMapping({"/{id}"})
+
+   
+
+    @PutMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
-    public StudentDTO updateStudent(@PathVariable Long id, @RequestBody StudentDTO studentDTO){
-        return studentService.saveStudentByDTO(id, studentDTO);
+    public StudentResponseDTO updateStudent(@PathVariable Long id, @RequestBody StudentDTO studentDTO) {
+        return studentService.updateStudent(id, studentDTO);
     }
-    
+
     @DeleteMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
-    public void deleteStudent(@PathVariable Long id){
+    public void deleteStudent(@PathVariable Long id) {
         studentService.deleteStudentById(id);
     }
 }

@@ -8,6 +8,6 @@ package ge.rest.example.rest.project.domain;
  *
  * @author vako
  */
-public enum Quality {
-    Low , High , Top
+public enum ContactType {
+    PHONENUMBER, EMAIL
 }

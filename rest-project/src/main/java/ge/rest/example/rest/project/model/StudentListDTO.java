@@ -17,6 +17,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudentListDTO {
-    List<StudentDTO> students;
+    List<StudentResponseDTO> students;
     
 }

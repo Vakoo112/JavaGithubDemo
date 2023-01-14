@@ -4,15 +4,16 @@
  */
 package ge.rest.example.rest.project.services;
 
-import ge.rest.example.rest.project.controllers.CourseController;
 import ge.rest.example.rest.project.domain.Course;
 import ge.rest.example.rest.project.mapper.CourseMapper;
 import ge.rest.example.rest.project.model.CourseDTO;
+import ge.rest.example.rest.project.model.CourseResponseDTO;
 import ge.rest.example.rest.project.repositories.CourseRepository;
 import ge.rest.example.rest.project.repositories.TeamRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -33,55 +34,62 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<CourseDTO> getAllCourses() {
+    public List<CourseResponseDTO> getAllCourses() {
 
         return courseRepository.findAll()
                 .stream()
                 .map(course -> {
-                    CourseDTO courseDTO = courseMapper.courseToCourseDTO(course);
-                    courseDTO.setCourseUrl(getCourseUrl(course.getId()));
-                    return courseDTO;
+                    CourseResponseDTO courseResponseDTO = courseMapper.courseToresponse(course);
+                    courseResponseDTO.setCourseId(course.getId());
+                    return courseResponseDTO;
                 })
                 .collect(Collectors.toList());
     }
 
     @Override
-    public CourseDTO getCourseById(Long id) {
+    public CourseResponseDTO getCourseById(Long id) {
 
-        return courseRepository.findById(id)
-                .map(courseMapper::courseToCourseDTO)
-                .map(courseDTO -> {
-                    courseDTO.setCourseUrl(getCourseUrl(id));
-                    return courseDTO;
-                })
-                .orElseThrow(RuntimeException::new);
-
+       Course course = courseRepository.findById(id).get();
+        CourseResponseDTO courseResponse = new CourseResponseDTO();
+        courseResponse.setCourseId(course.getId());
+        courseResponse.setDescription(course.getDescription());
+        courseResponse.setName(course.getName());
+          return courseResponse;
     }
 
     @Override
-    public CourseDTO createNewCourse(CourseDTO courseDTO) {
+    @Transactional
+    public CourseResponseDTO createNewCourse(CourseDTO courseDTO) {
 
-        return saveAndReturnDTO(courseMapper.courseDtoTocourse(courseDTO));
+        Course course = new Course();
+        course.setDescription(courseDTO.getDescription());
+        course.setName(courseDTO.getName());
+        courseRepository.save(course);
+        
+        CourseResponseDTO courseResponse = new CourseResponseDTO();
+        courseResponse.setCourseId(course.getId());
+        courseResponse.setDescription(course.getDescription());
+        courseResponse.setName(course.getName());
+        return courseResponse;
     }
 
     @Override
-    public CourseDTO saveCourseByDTO(Long id, CourseDTO courseDTO) {
-        return saveAndReturnDTO(courseMapper.courseDtoTocourse(courseDTO));
+    @Transactional
+    public CourseResponseDTO updateCourseByDTO(Long id, CourseDTO courseDTO) {
+         Course course = courseRepository.findById(id).get();
+         course.setDescription(courseDTO.getDescription());
+         course.setName(courseDTO.getName());
+         CourseResponseDTO courseResponse = new CourseResponseDTO();
+         courseResponse.setCourseId(course.getId());
+         courseResponse.setDescription(course.getDescription());
+         courseResponse.setName(course.getName());
+         return courseResponse;
     }
 
-    private CourseDTO saveAndReturnDTO(Course course) {
-        Course saveCourse = courseRepository.save(course);
-        CourseDTO returnDto = courseMapper.courseToCourseDTO(saveCourse);
 
-        returnDto.setCourseUrl(getCourseUrl(saveCourse.getId()));
-        return returnDto;
-    }
-
-    private String getCourseUrl(Long id) {
-        return CourseController.BASE_URL + "/" + id;
-    }
 
     @Override
+    @Transactional
     public void deleteCourseById(Long id) {
         courseRepository.deleteById(id);
     }

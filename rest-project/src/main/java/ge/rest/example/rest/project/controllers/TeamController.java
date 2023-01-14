@@ -4,12 +4,14 @@
  */
 package ge.rest.example.rest.project.controllers;
 
-import ge.rest.example.rest.project.domain.Team;
-import ge.rest.example.rest.project.model.AssignDTO;
+import ge.rest.example.rest.project.model.At;
+import ge.rest.example.rest.project.model.ListOfAt;
 import ge.rest.example.rest.project.model.TeamDTO;
 import ge.rest.example.rest.project.model.TeamListDTO;
 import ge.rest.example.rest.project.model.TeamRespponseDTO;
 import ge.rest.example.rest.project.services.TeamService;
+import java.util.List;
+import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +39,12 @@ public class TeamController {
         this.teamService = teamService;
     }
    // @ApiOperation(value="Get all teams", notes = "teamebis shesaxeb")
+      @GetMapping({"/active"})
+    @ResponseStatus(HttpStatus.OK)
+   public ListOfAt getActiveTeams() {
+        return new ListOfAt(teamService.getActiveTeams());
+    }
+    
      @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public TeamListDTO getAllTeam(){
@@ -53,15 +61,17 @@ public class TeamController {
      // @ApiOperation(value="This will create a new team", notes = "Api creates shesaxeb")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TeamRespponseDTO createNewTeam(@RequestBody TeamDTO teamDTO){
+    public  TeamRespponseDTO createNewTeam(@Valid @RequestBody TeamDTO teamDTO){
         return teamService.createNewTeam(teamDTO);
     }
     //--
-    @PostMapping("/{teamId}/student/{studentId}")
+    
+     @PostMapping("/{studentId}/student/{teamId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public AssignDTO assignStudentToTeam(@PathVariable Long teamId, @PathVariable Long studentId){
+    public At assignStudentToTeam (Long teamId, Long studentId) {
         return teamService.assignStudentToTeam(teamId, studentId);
     }
+   
    // @ApiOperation(value="Update team", notes = " update shesaxeb")
     @PutMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
@@ -74,4 +84,10 @@ public class TeamController {
     public void deleteTeam(@PathVariable Long id){
         teamService.deleteTeamById(id);
     }
+      @DeleteMapping({"/softDelete/{teamId}"})
+    @ResponseStatus(HttpStatus.OK)
+    public void softDeleteTeamById(@PathVariable Long teamId){
+        teamService.softDeleteTeamById(teamId);
+    }
+    
 }

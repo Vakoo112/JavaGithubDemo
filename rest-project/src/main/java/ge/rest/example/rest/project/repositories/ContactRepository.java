@@ -12,5 +12,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author vako
  */
 public interface ContactRepository extends JpaRepository<Contact,Long> {
-    
 }

@@ -4,7 +4,7 @@
  */
 package ge.rest.example.rest.project.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import ge.rest.example.rest.project.domain.ContactType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,9 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ContactReq {
-     private String contacttype;
+    private ContactType contacttype;
     private String contactvalue;
-   // @JsonProperty("contact_url")
-   // private String contactUrl;
     private Long studentId;
 }
