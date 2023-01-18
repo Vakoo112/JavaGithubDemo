@@ -4,18 +4,16 @@
  */
 package ge.rest.example.rest.project.model;
 
-import java.util.List;
-import lombok.AllArgsConstructor;
+import ge.rest.example.rest.project.domain.ContactType;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  *
  * @author vako
  */
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class AssignActiveStudent {
-      List<AssignTeamToStudentDTO> students;
+public class ContactResponseForList {
+    
+     private ContactType contacttype;
+     private String contactvalue;
 }

@@ -16,12 +16,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
 
 /**
  *
@@ -37,18 +33,15 @@ public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-   
     private String teamname;
     private LocalDate starttime;
     private LocalDate endtime;
-   // @Min(value= 5, message="Minimum must be 5")
-   // @Max(value= 15, message="Maximum must be 15")
     private Integer maxstudentsenrolled;
     private boolean finished=Boolean.FALSE;
     private boolean deleted = Boolean.FALSE;
     @ManyToOne
     private Course course;
-    //add detatch
+
     @ManyToMany
      @JoinTable(name="student_team", 
             joinColumns=@JoinColumn(name ="team_id"), inverseJoinColumns = @JoinColumn(name = "student_id"))

@@ -7,6 +7,7 @@ package ge.rest.example.rest.project.services;
 import ge.rest.example.rest.project.domain.Course;
 import ge.rest.example.rest.project.domain.Student;
 import ge.rest.example.rest.project.domain.Team;
+import ge.rest.example.rest.project.mapper.CourseMapper;
 import ge.rest.example.rest.project.mapper.TeamMapper;
 import ge.rest.example.rest.project.model.At;
 import ge.rest.example.rest.project.model.CourseDTO;
@@ -28,13 +29,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class TeamServiceImpl implements TeamService {
 
+    private final CourseMapper courseMapper;
     private final TeamMapper teamMapper;
     private final TeamRepository teamRepository;
     private final CourseRepository courseRepository;
     private final StudentRepository studentRepository;
 
-    public TeamServiceImpl(TeamMapper teamMapper, TeamRepository teamRepository,
+    public TeamServiceImpl(CourseMapper courseMapper, TeamMapper teamMapper, TeamRepository teamRepository,
             CourseRepository courseRepository, CourseService courseService, StudentRepository studentRepository) {
+        this.courseMapper = courseMapper;
         this.teamMapper = teamMapper;
         this.teamRepository = teamRepository;
         this.courseRepository = courseRepository;
@@ -48,7 +51,6 @@ public class TeamServiceImpl implements TeamService {
                 .stream()
                 .map(team -> {
                     At assignTeamToStudentDTO = teamMapper.teamToAssign(team);
-                    
 
                     return assignTeamToStudentDTO;
                 })
@@ -72,23 +74,14 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public TeamRespponseDTO getTeamsById(Long id) {
 
-        Optional<Team> teamOPT = teamRepository.findById(id);
-        Team team = teamOPT.get();
+        Team team = teamRepository.findById(id).get();
         Course course = courseRepository.findById(team.getCourse().getId()).get();
-        CourseDTO courseDTO = new CourseDTO();
-        courseDTO.setName(course.getName());
-        courseDTO.setDescription(course.getDescription());
-        TeamRespponseDTO teamResponse = new TeamRespponseDTO();
-        teamResponse.setTeamname(team.getTeamname());
-        teamResponse.setStarttime(team.getStarttime());
-        teamResponse.setEndtime(team.getEndtime());
-        teamResponse.setMaxstudentsenrolled(team.getMaxstudentsenrolled());
-        teamResponse.setTeamId(team.getId());
-        teamResponse.setFinished(team.isFinished());
-        teamResponse.setDeleted(team.isDeleted());
-        teamResponse.setCourse(courseDTO);
+        CourseDTO courseDTO = courseMapper.courseToCourseDTO(course);
+        TeamRespponseDTO team1 = teamMapper.teamToResponse(team);
+        team1.setTeamId(team.getId());
+        team1.setCourse(courseDTO);
 
-        return teamResponse;
+        return team1;
 
     }
 
@@ -100,78 +93,77 @@ public class TeamServiceImpl implements TeamService {
             throw new RuntimeException("team is deactivated");
         }
         Student student = studentRepository.findById(studentId).get();
+        if(student.isActive()){
         team.getStudents().add(student);
-          if(team.getMaxstudentsenrolled() >= team.getStudents().size()) {
-        At assign = new At();
-        assign = teamMapper.teamToAssign(team);
+      
+        if (team.getMaxstudentsenrolled() >= team.getStudents().size()) {
+            At assign = new At();
+            assign = teamMapper.teamToAssign(team);
 
-        return assign;
-          } else {
-           throw new RuntimeException("Team is full");   
-          }        
-         
+            return assign;
+        } else {
+            throw new RuntimeException("Team is full");
+        }
+        } else {
+          throw new RuntimeException("Student is deactive");   
+        }
     }
 
-   
-    //--
     @Override
     @Transactional
     public TeamRespponseDTO createNewTeam(TeamDTO teamDTO) {
+        Optional<Team> teamName = teamRepository.findByTeamname(teamDTO.getTeamname());
+        if (teamName.isPresent()) {
+          throw new RuntimeException ("Teamname already exists");   
+        } else {
         Course course = courseRepository.findById(teamDTO.getCourseId()).get();
-        Team team = new Team();
-        //
-
-        team.setTeamname(teamDTO.getTeamname());
+        Team team = teamMapper.teamDtoToteam(teamDTO);
         team.setCourse(course);
-        team.setMaxstudentsenrolled(teamDTO.getMaxstudentsenrolled());
-        team.setEndtime(teamDTO.getEndtime());
-        team.setStarttime(teamDTO.getStarttime());
-
+        if(team.getStarttime().plusMonths(6).isBefore(team.getEndtime())){
         team = teamRepository.save(team);
 
-        CourseDTO coursedto = new CourseDTO();
-        coursedto.setName(course.getName());
-        coursedto.setDescription(course.getDescription());
+        CourseDTO coursedto = courseMapper.courseToCourseDTO(course);
 
-        TeamRespponseDTO team1 = new TeamRespponseDTO();
-        team1.setEndtime(team.getEndtime());
-        team1.setTeamname(team.getTeamname());
-        team1.setStarttime(team.getStarttime());
-        team1.setMaxstudentsenrolled(team.getMaxstudentsenrolled());
+        TeamRespponseDTO team1 = teamMapper.teamToResponse(team);
         team1.setTeamId(team.getId());
-        team1.setDeleted(false);
-        team1.setFinished(false);
         team1.setCourse(coursedto);
 
         return team1;
+        } else {
+         throw new RuntimeException("enddate must be 6 months after startdate");   
+        }
+    }
     }
 
     @Override
     @Transactional
     public TeamRespponseDTO updateTeam(Long id, TeamDTO teamDTO) {
         Course course = courseRepository.findById(teamDTO.getCourseId()).get();
-        Optional<Team> teamOPT = teamRepository.findById(id);
-        Team team = teamOPT.get();
-        team.setTeamname(teamDTO.getTeamname());
-        team.setEndtime(teamDTO.getEndtime());
-        team.setStarttime(team.getStarttime());
-        team.setMaxstudentsenrolled(teamDTO.getMaxstudentsenrolled());
-        team.setCourse(course);
+        Team team = teamRepository.findById(id).get();
+        if (team.isDeleted() == true || team.isFinished() == true) {
+            throw new RuntimeException("Team is deleted or finished");
+        } else {
+            team.setTeamname(teamDTO.getTeamname());
+            team.setEndtime(teamDTO.getEndtime());
+            team.setStarttime(team.getStarttime());
+            team.setMaxstudentsenrolled(teamDTO.getMaxstudentsenrolled());
+            team.setCourse(course);
 
+            CourseDTO courseDTO = new CourseDTO();
+            courseDTO.setName(course.getName());
+            courseDTO.setDescription(course.getDescription());
 
-        CourseDTO courseDTO = new CourseDTO();
-        courseDTO.setName(course.getName());
-        courseDTO.setDescription(course.getDescription());
-
-        TeamRespponseDTO teamResponse = new TeamRespponseDTO();
-        teamResponse.setTeamname(team.getTeamname());
-        teamResponse.setStarttime(team.getStarttime());
-        teamResponse.setEndtime(team.getEndtime());
-        teamResponse.setCourse(courseDTO);
-        teamResponse.setTeamId(team.getId());
-        teamResponse.setDeleted(false);
-        teamResponse.setDeleted(false);
-        return teamResponse;
+            TeamRespponseDTO teamResponse = new TeamRespponseDTO();
+            teamResponse.setMaxstudentsenrolled(team.getMaxstudentsenrolled());
+            teamResponse.setTeamname(team.getTeamname());
+            teamResponse.setStarttime(team.getStarttime());
+            teamResponse.setEndtime(team.getEndtime());
+            teamResponse.setCourse(courseDTO);
+            teamResponse.setTeamId(team.getId());
+            teamResponse.setDeleted(team.isDeleted());
+            teamResponse.setDeleted(team.isFinished());
+            return teamResponse;
+        }
     }
 
     @Override

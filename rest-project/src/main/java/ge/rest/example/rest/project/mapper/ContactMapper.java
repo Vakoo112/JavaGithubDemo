@@ -17,15 +17,15 @@ import org.mapstruct.factory.Mappers;
  */
 @Mapper
 public interface ContactMapper {
-       ContactMapper INSTANCE = Mappers.getMapper(ContactMapper.class);
 
-//response
+    ContactMapper INSTANCE = Mappers.getMapper(ContactMapper.class);
+
     ContactDTO contactToContactDTO(Contact contact);
-   //req 
+
     Contact contactDtoTcontact(ContactReq contactReq);
-    
-   ContactReq  contactToContactres(Contact contact);
-   
-   ContactResponseDTO contactToDto(Contact contact);
-   
+
+    ContactReq contactToContactres(Contact contact);
+
+    ContactResponseDTO contactToDto(Contact contact);
+
 }

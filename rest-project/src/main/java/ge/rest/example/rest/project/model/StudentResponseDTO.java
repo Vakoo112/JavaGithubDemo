@@ -18,5 +18,6 @@ public class StudentResponseDTO {
     private String lastname;
     private String idnumber;
     private String adress;
-    private Set<ContactReq> contacts;
+    private boolean active;
+    private Set<ContactResponseForList> contacts;
 }

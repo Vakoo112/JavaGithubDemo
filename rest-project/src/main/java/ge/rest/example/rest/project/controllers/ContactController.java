@@ -7,9 +7,11 @@ package ge.rest.example.rest.project.controllers;
 import ge.rest.example.rest.project.model.ContactListDTO;
 import ge.rest.example.rest.project.model.ContactReq;
 import ge.rest.example.rest.project.model.ContactResponseDTO;
+import ge.rest.example.rest.project.model.ContactUpdateReq;
 import ge.rest.example.rest.project.services.ContactService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,15 +55,15 @@ public class ContactController {
   @Operation(summary = "Create Contact  ", description = "Contact sheqmnis  shesaxeb ")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ContactResponseDTO createNewContact(@RequestBody ContactReq contactReq){
+    public ContactResponseDTO createNewContact(@Valid @RequestBody ContactReq contactReq){
         return contactService.createNewContact(contactReq);
     }
   @Operation(summary = "update Contact ", description = "Contact update  shesaxeb ")
      @PutMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
-    public ContactResponseDTO updateContact(@PathVariable Long id, @RequestBody ContactReq contactReq){
+    public ContactResponseDTO updateContact(@PathVariable Long id,@Valid @RequestBody ContactUpdateReq contactUpdateReq){
 
-        return contactService.updateContactByDTO(id, contactReq);
+        return contactService.updateContactByDTO(id, contactUpdateReq);
     }
      @Operation(summary = "Delete Contact by id ", description = "Contact delete  shesaxeb ")
         @DeleteMapping({"/{id}"})

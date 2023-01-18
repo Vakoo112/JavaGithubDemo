@@ -6,6 +6,7 @@ import ge.rest.example.rest.project.model.CourseResponseDTO;
 import ge.rest.example.rest.project.services.CourseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,14 +52,14 @@ public class CourseController {
     @Operation(summary = "add teamToCourse ", description = "Activecourse  shesaxeb ")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CourseResponseDTO createNewTeam(@RequestBody CourseDTO courseDTO) {
+    public CourseResponseDTO createNewTeam(@Valid @RequestBody CourseDTO courseDTO) {
         return courseService.createNewCourse(courseDTO);
     }
 
     @Operation(summary = "update Course ", description = "course  shesaxeb ")
     @PutMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
-    public CourseResponseDTO updateCourse(@PathVariable Long id, @RequestBody CourseDTO courseDTO) {
+    public CourseResponseDTO updateCourse(@PathVariable Long id,@Valid @RequestBody CourseDTO courseDTO) {
         return courseService.updateCourseByDTO(id, courseDTO);
     }
 

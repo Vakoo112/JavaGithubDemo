@@ -6,18 +6,13 @@ package ge.rest.example.rest.project.domain;
 
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -38,6 +33,7 @@ public class Student {
     private String lastname;
     private String idnumber;
     private String adress;
+    private boolean active=Boolean.TRUE;
     @OneToMany( mappedBy="student")
     private Set<Contact> contacts = new HashSet<>();
     @ManyToMany(mappedBy = "students")

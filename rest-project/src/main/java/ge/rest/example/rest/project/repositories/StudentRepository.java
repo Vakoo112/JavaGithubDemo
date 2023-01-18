@@ -5,15 +5,13 @@
 package ge.rest.example.rest.project.repositories;
 
 import ge.rest.example.rest.project.domain.Student;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 
 /**
  *
  * @author vako
  */
 public interface StudentRepository extends JpaRepository<Student,Long> {
-    
-  
+    Optional<Student > findByIdnumber(String idnumber);
 }

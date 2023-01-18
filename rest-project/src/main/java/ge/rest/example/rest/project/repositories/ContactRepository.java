@@ -5,6 +5,7 @@
 package ge.rest.example.rest.project.repositories;
 
 import ge.rest.example.rest.project.domain.Contact;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -12,4 +13,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author vako
  */
 public interface ContactRepository extends JpaRepository<Contact,Long> {
+        Optional<Contact > findByContactvalue(String contactvalue);
 }

@@ -21,6 +21,6 @@ public class At {
     private Integer maxstudentsenrolled;
     private boolean finished = Boolean.FALSE;
     private boolean deleted = Boolean.FALSE;
-    private CourseResponseDTO course;
+    private CourseDTO course;
     private Set<StudentResponseDTO> students;
 }

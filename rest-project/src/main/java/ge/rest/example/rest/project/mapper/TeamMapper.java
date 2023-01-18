@@ -5,7 +5,6 @@
 package ge.rest.example.rest.project.mapper;
 
 import ge.rest.example.rest.project.domain.Team;
-import ge.rest.example.rest.project.model.AssignDTO;
 import ge.rest.example.rest.project.model.At;
 import ge.rest.example.rest.project.model.TeamDTO;
 import ge.rest.example.rest.project.model.TeamRespponseDTO;
@@ -25,8 +24,6 @@ public interface TeamMapper {
     Team teamDtoToteam(TeamDTO teamDTO);
     
     TeamRespponseDTO teamToResponse(Team team);
-    
-    AssignDTO teamtoAssign(Team team);
     
     At  teamToAssign(Team team);
 

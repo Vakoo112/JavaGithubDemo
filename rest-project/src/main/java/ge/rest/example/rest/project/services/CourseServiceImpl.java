@@ -11,6 +11,7 @@ import ge.rest.example.rest.project.model.CourseResponseDTO;
 import ge.rest.example.rest.project.repositories.CourseRepository;
 import ge.rest.example.rest.project.repositories.TeamRepository;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,13 +25,11 @@ public class CourseServiceImpl implements CourseService {
 
     private final CourseMapper courseMapper;
     private final CourseRepository courseRepository;
-    private final TeamRepository teamRepository;
 
     public CourseServiceImpl(CourseMapper courseMapper, CourseRepository courseRepository,
             TeamRepository teamRepository) {
         this.courseMapper = courseMapper;
         this.courseRepository = courseRepository;
-        this.teamRepository = teamRepository;
     }
 
     @Override
@@ -49,23 +48,36 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public CourseResponseDTO getCourseById(Long id) {
 
-       Course course = courseRepository.findById(id).get();
+        Optional<Course> courseOPT = courseRepository.findById(id);
+        Course course = courseOPT.get();
         CourseResponseDTO courseResponse = new CourseResponseDTO();
+        courseResponse = courseMapper.courseToresponse(course);
         courseResponse.setCourseId(course.getId());
-        courseResponse.setDescription(course.getDescription());
-        courseResponse.setName(course.getName());
-          return courseResponse;
+        return courseResponse;
     }
 
     @Override
     @Transactional
     public CourseResponseDTO createNewCourse(CourseDTO courseDTO) {
+        Optional<Course> courseName = courseRepository.findByName(courseDTO.getName());
+        if(courseName.isPresent()) {
+         throw new RuntimeException("course name already exists");   
+        } else {
+        Course course = courseMapper.courseDtoTocourse(courseDTO);
+        courseRepository.save(course);
 
-        Course course = new Course();
+        CourseResponseDTO courseResponse = courseMapper.courseToresponse(course);
+        courseResponse.setCourseId(course.getId());
+        return courseResponse;
+        }
+    }
+
+    @Override
+    @Transactional
+    public CourseResponseDTO updateCourseByDTO(Long id, CourseDTO courseDTO) {
+        Course course = courseRepository.findById(id).get();
         course.setDescription(courseDTO.getDescription());
         course.setName(courseDTO.getName());
-        courseRepository.save(course);
-        
         CourseResponseDTO courseResponse = new CourseResponseDTO();
         courseResponse.setCourseId(course.getId());
         courseResponse.setDescription(course.getDescription());
@@ -75,22 +87,12 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     @Transactional
-    public CourseResponseDTO updateCourseByDTO(Long id, CourseDTO courseDTO) {
-         Course course = courseRepository.findById(id).get();
-         course.setDescription(courseDTO.getDescription());
-         course.setName(courseDTO.getName());
-         CourseResponseDTO courseResponse = new CourseResponseDTO();
-         courseResponse.setCourseId(course.getId());
-         courseResponse.setDescription(course.getDescription());
-         courseResponse.setName(course.getName());
-         return courseResponse;
-    }
-
-
-
-    @Override
-    @Transactional
     public void deleteCourseById(Long id) {
-        courseRepository.deleteById(id);
+        Course course = courseRepository.findById(id).get();
+        if (course.getTeams().isEmpty()) {
+            courseRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Course is used");
+        }
     }
 }

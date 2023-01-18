@@ -19,8 +19,8 @@ import org.hibernate.validator.constraints.Length;
 public class TeamDTO {
 
 
-    @NotBlank(message = "Team name cannot be blank")
-    @Length(min = 5, max = 16, message = "Team name must be between 5-16 characters")
+    @NotBlank(message = "teamname cannot be blank")
+    @Length(min = 5, max = 16, message = "teamname must be between 5-16 characters")
     private String teamname;
     private LocalDate starttime;
     private LocalDate endtime;

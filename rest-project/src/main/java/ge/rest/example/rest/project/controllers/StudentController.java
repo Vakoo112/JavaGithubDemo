@@ -9,6 +9,7 @@ import ge.rest.example.rest.project.model.StudentListDTO;
 import ge.rest.example.rest.project.model.StudentResponseDTO;
 import ge.rest.example.rest.project.services.StudentService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,7 +37,6 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public StudentListDTO getListOfStudent() {
@@ -51,21 +51,24 @@ public class StudentController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public StudentResponseDTO createNewStudent(@RequestBody StudentDTO studentDTO) {
+    public StudentResponseDTO createNewStudent(@RequestBody @Valid StudentDTO studentDTO) {
         return studentService.createNewStudent(studentDTO);
     }
 
-   
-
     @PutMapping({"/{id}"})
     @ResponseStatus(HttpStatus.OK)
-    public StudentResponseDTO updateStudent(@PathVariable Long id, @RequestBody StudentDTO studentDTO) {
+    public StudentResponseDTO updateStudent(@PathVariable Long id, @Valid @RequestBody StudentDTO studentDTO) {
         return studentService.updateStudent(id, studentDTO);
     }
 
-    @DeleteMapping({"/{id}"})
+    @DeleteMapping({"/deactive/{id}"})
     @ResponseStatus(HttpStatus.OK)
-    public void deleteStudent(@PathVariable Long id) {
-        studentService.deleteStudentById(id);
+    public void deactiveStudentById(@PathVariable Long id) {
+        studentService.deactiveStudentById(id);
     }
+    @DeleteMapping({"/deleteDeactivated/{id}"})
+    @ResponseStatus(HttpStatus.OK)
+     public  void deleteDeactiveateddStudent(Long id) {
+          studentService.deleteDeactiveateddStudent(id);
+     }
 }

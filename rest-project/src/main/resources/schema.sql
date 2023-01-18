@@ -13,15 +13,15 @@ create table student(
 id bigint not null auto_increment,
  firstname varchar(255),
  lastname varchar(255),
-idnumber varchar(255), 
+idnumber varchar(255) unique not null,  
 adress varchar(255),
-contact_id bigint,
+active boolean,
  primary key (id)  );
 
 create table course (
 id bigint not null auto_increment,
 description varchar(255), 
-name varchar(255), 
+name varchar(255) unique not null, 
 primary key (id) );
 
 create table contact (

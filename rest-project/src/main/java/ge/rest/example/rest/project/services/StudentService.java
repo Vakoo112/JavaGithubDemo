@@ -20,8 +20,10 @@ public interface StudentService {
 
     StudentResponseDTO createNewStudent(StudentDTO studentDTO);
     
-     StudentResponseDTO updateStudent(Long id, StudentDTO studentDTO);
-
-    void deleteStudentById(Long id);
+    StudentResponseDTO updateStudent(Long id, StudentDTO studentDTO);
+    
+    void deactiveStudentById(Long id);
+    
+    void deleteDeactiveateddStudent(Long id);
 
 }

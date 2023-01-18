@@ -20,7 +20,7 @@ public class TeamRespponseDTO {
 
     private Integer maxstudentsenrolled;
     
-    //--es wasashlelia
+
     private boolean finished;
     private boolean deleted;
     private Long teamId;

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
  *
  * @author vako
  */
+/**
 @Component
 public class Bootstrap implements CommandLineRunner {
     private CourseRepository courseRepository;
@@ -59,3 +60,4 @@ public class Bootstrap implements CommandLineRunner {
            System.out.println("Students Loaded: " + studentRepository.count());
        }
 }
+*/

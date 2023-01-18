@@ -4,11 +4,9 @@
  */
 package ge.rest.example.rest.project.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import ge.rest.example.rest.project.domain.Team;
-import java.util.HashSet;
-import java.util.Set;
+import javax.validation.constraints.NotBlank;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 /**
  *
@@ -17,11 +15,11 @@ import lombok.Data;
 @Data
 public class CourseDTO {
 
+    @NotBlank(message = "Coursename cannot be blank")
+    @Length(min = 5, max = 16, message = "Coursename must be between 5-16 characters")
     private String name;
-
+    @NotBlank(message = "Description cannot be blank")
+    @Length(min = 10, max = 30, message = "Description must be between 5-16 characters")
     private String description;
-    
- //   @JsonProperty("courseurl")
-   // private String courseUrl;
-      
+
 }
