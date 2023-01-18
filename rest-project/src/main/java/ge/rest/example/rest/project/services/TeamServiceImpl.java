@@ -142,7 +142,7 @@ public class TeamServiceImpl implements TeamService {
         Course course = courseRepository.findById(teamDTO.getCourseId()).get();
         Team team = teamRepository.findById(id).get();
         if (team.isDeleted() == true) {
-            throw new RuntimeException("Team is deleted or finished");
+            throw new RuntimeException("Team is deactivated ");
         } else {
             team.setTeamname(teamDTO.getTeamname());
             team.setEndtime(teamDTO.getEndtime());
