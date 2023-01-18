@@ -25,7 +25,7 @@ public interface TeamService {
      At assignStudentToTeam(Long teamId, Long studentId);
 
     TeamRespponseDTO createNewTeam(TeamDTO teamDTO);
-
+    
     TeamRespponseDTO updateTeam(Long id, TeamDTO teamDTO);
 
     void deleteTeamById(Long id);

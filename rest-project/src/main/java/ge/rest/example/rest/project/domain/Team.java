@@ -1,4 +1,4 @@
-/*
+    /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -37,7 +37,6 @@ public class Team {
     private LocalDate starttime;
     private LocalDate endtime;
     private Integer maxstudentsenrolled;
-    private boolean finished=Boolean.FALSE;
     private boolean deleted = Boolean.FALSE;
     @ManyToOne
     private Course course;

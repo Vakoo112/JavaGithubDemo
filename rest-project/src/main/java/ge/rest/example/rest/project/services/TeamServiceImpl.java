@@ -119,7 +119,8 @@ public class TeamServiceImpl implements TeamService {
         Course course = courseRepository.findById(teamDTO.getCourseId()).get();
         Team team = teamMapper.teamDtoToteam(teamDTO);
         team.setCourse(course);
-        if(team.getStarttime().plusMonths(6).isBefore(team.getEndtime())){
+        if(team.getStarttime().plusMonths(6).isBefore(team.getEndtime()) 
+                && team.getEndtime().isBefore(team.getStarttime().plusMonths(6).plusWeeks(1))){
         team = teamRepository.save(team);
 
         CourseDTO coursedto = courseMapper.courseToCourseDTO(course);
@@ -140,7 +141,7 @@ public class TeamServiceImpl implements TeamService {
     public TeamRespponseDTO updateTeam(Long id, TeamDTO teamDTO) {
         Course course = courseRepository.findById(teamDTO.getCourseId()).get();
         Team team = teamRepository.findById(id).get();
-        if (team.isDeleted() == true || team.isFinished() == true) {
+        if (team.isDeleted() == true) {
             throw new RuntimeException("Team is deleted or finished");
         } else {
             team.setTeamname(teamDTO.getTeamname());
@@ -161,7 +162,6 @@ public class TeamServiceImpl implements TeamService {
             teamResponse.setCourse(courseDTO);
             teamResponse.setTeamId(team.getId());
             teamResponse.setDeleted(team.isDeleted());
-            teamResponse.setDeleted(team.isFinished());
             return teamResponse;
         }
     }

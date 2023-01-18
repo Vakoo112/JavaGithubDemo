@@ -33,7 +33,7 @@ public class Course {
     private String name;
    
     
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="course")
+    @OneToMany( mappedBy="course")
     private Set<Team> teams = new HashSet<>();
 
     

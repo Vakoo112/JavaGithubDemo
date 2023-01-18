@@ -17,6 +17,7 @@ import ge.rest.example.rest.project.repositories.StudentRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,10 +72,19 @@ public class ContactServiceImpl implements ContactService {
     public ContactResponseDTO createNewContact(ContactReq contactReq) {
          Optional<Contact> contactOpt = contactRepository.findByContactvalue(contactReq.getContactvalue());
          if(contactOpt.isPresent()) {
-           throw new RuntimeException ("contactvalue already exists");   
+           throw new RuntimeException ("Contactvalue already exists");   
          } else {
+             switch(contactReq.getContacttype()) {
+                 case PHONENUMBER : {   
+                  if(!StringUtils.isNumeric(contactReq.getContactvalue())){   
+                   throw new IllegalArgumentException("Phonenumber must be numeric");   
+                  }
+                  break;
+                 }
+             }
         Student student = studentRepository.findById(contactReq.getStudentId()).get();
         Contact contact = contactMapper.contactDtoTcontact(contactReq);
+      
         contact.setStudent(student);
 
         contact = contactRepository.save(contact);
@@ -86,6 +96,7 @@ public class ContactServiceImpl implements ContactService {
 
         return contact1;
          }
+        
     }
 
     @Override

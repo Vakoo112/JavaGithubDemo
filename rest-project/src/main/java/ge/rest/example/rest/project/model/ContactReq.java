@@ -21,7 +21,8 @@ import org.hibernate.validator.constraints.Length;
 public class ContactReq {
     private ContactType contacttype;
     @NotBlank(message = "ContactValue cannot be blank")
-    @Length(min = 9, max = 30, message = "ContactValue must be between 9-16 characters")
+    @Length(min = 9, max = 20, message = "ContactValue must be between 9-20 characters")
     private String contactvalue;
     private Long studentId;
+    
 }

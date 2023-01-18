@@ -5,7 +5,6 @@ starttime date,
 endtime date, 
 maxstudentsenrolled integer,
 deleted boolean,
-finished boolean,
 course_id bigint,
  primary key (id) );
 
