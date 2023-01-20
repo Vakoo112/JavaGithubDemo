@@ -92,7 +92,7 @@ public class CourseServiceImpl implements CourseService {
         if (course.getTeams().isEmpty()) {
             courseRepository.deleteById(id);
         } else {
-            throw new RuntimeException("Course is used");
+            throw new RuntimeException("Course is active");
         }
     }
 }
