@@ -30,6 +30,27 @@ contacttype ENUM('PHONENUMBER','EMAIL'),
  student_id bigint,  
 primary key(id))  ;
 
+create table _user (
+id int not null auto_increment,
+firstname varchar(255),
+lastname varchar(255),
+email varchar(255),
+password varchar(255),
+role ENUM ('USER','ADMIN'),
+primary key (id)
+);
+
+create table token (
+id int not null auto_increment,
+token varchar(255),
+token_type ENUM('BEARER'),
+revoked boolean,
+expired boolean,
+user_id int ,
+primary key (id)
+);
+
+
 create table student_team(
 student_id bigint  not null,
  team_id bigint  not null,
